@@ -1,0 +1,20 @@
+{
+  "name": "cconccourse",
+  "version": "1.0.0",
+  "description": "Concourse CC Feed",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.15.4",
+    "request": "~2.81.0",
+    "request-promise-native": "~1.0.4",
+    "xml": "~1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "~1.11.0"
+  }
+}
