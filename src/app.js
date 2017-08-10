@@ -2,13 +2,20 @@
 
 const express = require('express');
 const app = express();
+const { URL } = require('url');
 const xml = require('xml');
 const request = require('request-promise-native');
 const morgan = require('morgan');
 
-const API_URL = process.env.API_URL;
-if (!API_URL) {
+let baseApiUri;
+if (!process.env.API_URL) {
   throw new Error('API_URL not found');
+} else {
+  baseApiUri = new URL(process.env.API_URL);
+}
+const TEAM = process.env.TEAM;
+if (!TEAM) {
+  throw new Error('Concourse TEAM not found');
 }
 const AUTH_COOKIE = process.env.AUTH_COOKIE;
 if (!AUTH_COOKIE) {
@@ -30,26 +37,32 @@ const toProject = job => ({
   lastBuildStatus: translateStatus[job.finished_build.status],
   lastBuildLabel: job.finished_build.pipeline_name,
   lastBuildTime: job.finished_build.end_time,
-  webUrl: API_URL + job.finished_build.url
+  webUrl: baseApiUri.origin + job.finished_build.url
 });
 
 app.use(morgan('combined'));
 
+app.get('/health', async (req, res) => {
+  res.sendStatus(200);
+});
+
 app.get('/cc.xml', async (req, res) => {
+  const fetchPipelinesUrl = `${baseApiUri}/teams/${TEAM}/pipelines`;
+
   const allPipelines = await request.get({
-    url: API_URL + '/teams/main/pipelines',
+    url: fetchPipelinesUrl,
     json: true,
     headers: {
-      'Cookie': process.env.AUTH_COOKIE
+      'Cookie': AUTH_COOKIE
     }
   });
 
   const allJobs = (await Promise.all(allPipelines.map(pipeline =>
     request.get({
-      url: API_URL + pipeline.url + '/jobs',
+      url: `${baseApiUri}${pipeline.url}/jobs`,
       json: true,
       headers: {
-        'Cookie': process.env.AUTH_COOKIE
+        'Cookie': AUTH_COOKIE
       }
     })
   ))).reduce((xs, x) => xs.concat(x), []);
@@ -64,7 +77,7 @@ app.get('/cc.xml', async (req, res) => {
   res.send(xml([{ "Projects": projects }]));
 });
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, function () {
   console.log(`PlaneSpotter listening on port ${port}!`);
 });
