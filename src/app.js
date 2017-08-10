@@ -56,5 +56,5 @@ app.get('/cc.xml', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
-  console.log(`CConccourse listening on port ${port}!`);
+  console.log(`PlaneSpotter listening on port ${port}!`);
 });

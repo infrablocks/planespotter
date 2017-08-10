@@ -1,10 +1,10 @@
 FROM node:8.2.1
 
-WORKDIR /opt/cconccourse
-ADD package.json /opt/cconccourse/package.json
-ADD src/app.js /opt/cconccourse/app.js
+WORKDIR /opt/planespotter
+ADD package.json /opt/planespotter/package.json
 RUN npm install
 
+ADD src/app.js /opt/planespotter/app.js
 
 EXPOSE 3000
-CMD ["node", "/opt/cconccourse/app.js"]
+CMD ["node", "/opt/planespotter/app.js"]

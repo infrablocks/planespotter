@@ -1,7 +1,7 @@
 {
-  "name": "cconccourse",
+  "name": "planespotter",
   "version": "1.0.0",
-  "description": "Concourse CC Feed",
+  "description": "Concourse CC.xml Feed",
   "main": "index.js",
   "scripts": {
     "test": "test"
