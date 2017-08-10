@@ -17,3 +17,7 @@
 ## Start in debug mode:
     
     nodemon src/app.js
+    
+## Start with docker:
+    docker build . -t cconccourse
+    docker run -e API_URL -e AUTH_COOKIE -p 3000:3000 -t cconccourse
