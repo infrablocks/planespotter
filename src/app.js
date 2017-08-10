@@ -42,30 +42,45 @@ const toProject = job => ({
 
 app.use(morgan('combined'));
 
-app.get('/health', async (req, res) => {
+app.get(['/', '/health'], async (req, res) => {
   res.sendStatus(200);
 });
 
 app.get('/cc.xml', async (req, res) => {
   const fetchPipelinesUrl = `${baseApiUri}/teams/${TEAM}/pipelines`;
-
-  const allPipelines = await request.get({
-    url: fetchPipelinesUrl,
-    json: true,
-    headers: {
-      'Cookie': AUTH_COOKIE
-    }
-  });
-
-  const allJobs = (await Promise.all(allPipelines.map(pipeline =>
-    request.get({
-      url: `${baseApiUri}${pipeline.url}/jobs`,
+  let allPipelines = [];
+  try {
+    allPipelines = await request.get({
+      url: fetchPipelinesUrl,
       json: true,
       headers: {
         'Cookie': AUTH_COOKIE
       }
-    })
-  ))).reduce((xs, x) => xs.concat(x), []);
+    });
+  } catch (e) {
+    return res
+      .status(500)
+      .send(`Unable to fetch pipeline information for url ${e.options.url}.
+      Reason: ${e.message}`);
+  }
+
+  let allJobs = [];
+  try {
+    allJobs = (await Promise.all(allPipelines.map(pipeline =>
+      request.get({
+        url: `${baseApiUri}${pipeline.url}/jobs`,
+        json: true,
+        headers: {
+          'Cookie': AUTH_COOKIE
+        }
+      })
+    ))).reduce((xs, x) => xs.concat(x), []);
+  } catch (e) {
+    return res
+      .status(500)
+      .send(`Unable to fetch jobs information for url ${e.options.url}.
+      Reason: ${e.message}`);
+  }
 
   const projects = allJobs.map(job => ({
     "Project": {
