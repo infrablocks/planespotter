@@ -20,6 +20,6 @@
     
 ## Start with docker:
     docker build . -t planespotter
-    docker run -e API_URL -e AUTH_COOKIE -p 3000:3000 -t planespotter
+    docker run --rm -e API_URL -e AUTH_COOKIE -p 3000:3000 -t planespotter
 
 ## Concourse job stats on: http://localhost:3000/cc.xml

@@ -4,8 +4,16 @@ const express = require('express');
 const app = express();
 const xml = require('xml');
 const request = require('request-promise-native');
+const morgan = require('morgan');
 
 const API_URL = process.env.API_URL;
+if (!API_URL) {
+  throw new Error('API_URL not found');
+}
+const AUTH_COOKIE = process.env.AUTH_COOKIE;
+if (!AUTH_COOKIE) {
+  throw new Error('AUTH_COOKIE not found')
+}
 
 const translateStatus = {
   "pending": "Unknown",
@@ -24,6 +32,8 @@ const toProject = job => ({
   lastBuildTime: job.finished_build.end_time,
   webUrl: API_URL + job.finished_build.url
 });
+
+app.use(morgan('combined'));
 
 app.get('/cc.xml', async (req, res) => {
   const allPipelines = await request.get({
