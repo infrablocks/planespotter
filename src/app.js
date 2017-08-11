@@ -6,6 +6,7 @@ const { URL } = require('url');
 const xml = require('xml');
 const request = require('request-promise-native');
 const morgan = require('morgan');
+const Concourse = require('./concourse');
 
 let baseApiUri;
 if (!process.env.API_URL) {
@@ -17,9 +18,10 @@ const TEAM = process.env.TEAM;
 if (!TEAM) {
   throw new Error('Concourse TEAM not found');
 }
-const AUTH_COOKIE = process.env.AUTH_COOKIE;
-if (!AUTH_COOKIE) {
-  throw new Error('AUTH_COOKIE not found')
+const AUTH_USERNAME = process.env.AUTH_USERNAME;
+const AUTH_PASSWORD = process.env.AUTH_PASSWORD;
+if (!AUTH_USERNAME || !AUTH_PASSWORD) {
+  throw new Error('AUTH_USERNAME/AUTH_PASSWORD not found')
 }
 
 const translateStatus = {
@@ -48,49 +50,28 @@ app.get(['/', '/health'], async (req, res) => {
 });
 
 app.get('/cc.xml', async (req, res) => {
-  const fetchPipelinesUrl = `${baseApiUri}/teams/${TEAM}/pipelines`;
-  let allPipelines = [];
   try {
-    allPipelines = await request.get({
-      url: fetchPipelinesUrl,
-      json: true,
-      headers: {
-        'Cookie': AUTH_COOKIE
+    const concourse = new Concourse(baseApiUri, TEAM);
+
+    const basicAuthToken = await concourse.fetchAccessToken(AUTH_USERNAME, AUTH_PASSWORD);
+
+    const allPipelines = await concourse.fetchAllPipelines(basicAuthToken);
+
+    const allJobs = await concourse.fetchAllJobs(allPipelines, basicAuthToken);
+
+    const projects = allJobs && allJobs.map(job => ({
+      "Project": {
+        "_attr": toProject(job)
       }
-    });
+    }));
+    res.set('Content-Type', 'text/xml');
+    res.send(xml([{ "Projects": projects }]));
   } catch (e) {
     return res
       .status(500)
-      .send(`Unable to fetch pipeline information for url ${e.options.url}.
-      Reason: ${e.message}`);
+      .send(`Unable to fetch concourse feed. Reason: ${e.message}`);
   }
 
-  let allJobs = [];
-  try {
-    allJobs = (await Promise.all(allPipelines.map(pipeline =>
-      request.get({
-        url: `${baseApiUri}${pipeline.url}/jobs`,
-        json: true,
-        headers: {
-          'Cookie': AUTH_COOKIE
-        }
-      })
-    ))).reduce((xs, x) => xs.concat(x), []);
-  } catch (e) {
-    return res
-      .status(500)
-      .send(`Unable to fetch jobs information for url ${e.options.url}.
-      Reason: ${e.message}`);
-  }
-
-  const projects = allJobs.map(job => ({
-    "Project": {
-      "_attr": toProject(job)
-    }
-  }));
-
-  res.set('Content-Type', 'text/xml');
-  res.send(xml([{ "Projects": projects }]));
 });
 
 const port = 3000;
