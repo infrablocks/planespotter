@@ -33,7 +33,7 @@ const translateStatus = {
 
 const toProject = job => (
   job.finished_build && {
-    name: job.finished_build.job_name + "#" + job.finished_build.pipeline_name,
+    name: job.finished_build.pipeline_name + "#" + job.finished_build.job_name,
     activity: job.next_build ? "Building" : "Sleeping",
     lastBuildStatus: translateStatus[job.finished_build.status],
     lastBuildLabel: job.finished_build.pipeline_name,
