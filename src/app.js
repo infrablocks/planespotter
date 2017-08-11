@@ -31,14 +31,15 @@ const translateStatus = {
   "aborted": "Exception",
 };
 
-const toProject = job => ({
-  name: job.finished_build.job_name + "#" + job.finished_build.pipeline_name,
-  activity: job.next_build ? "Building" : "Sleeping",
-  lastBuildStatus: translateStatus[job.finished_build.status],
-  lastBuildLabel: job.finished_build.pipeline_name,
-  lastBuildTime: job.finished_build.end_time,
-  webUrl: baseApiUri.origin + job.finished_build.url
-});
+const toProject = job => (
+  job.finished_build && {
+    name: job.finished_build.job_name + "#" + job.finished_build.pipeline_name,
+    activity: job.next_build ? "Building" : "Sleeping",
+    lastBuildStatus: translateStatus[job.finished_build.status],
+    lastBuildLabel: job.finished_build.pipeline_name,
+    lastBuildTime: job.finished_build.end_time,
+    webUrl: baseApiUri.origin + job.finished_build.url
+  });
 
 app.use(morgan('combined'));
 
