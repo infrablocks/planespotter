@@ -1,0 +1,10 @@
+<Projects>
+    <Project name="pipeline1#job1" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="pipeline1"
+             lastBuildTime="1502470729" webUrl="https://ci/teams/main/pipelines/pipeline1/jobs/job1/builds/2"/>
+    <Project name="pipeline1#job2" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="pipeline1"
+             lastBuildTime="1502470729" webUrl="https://ci/teams/main/pipelines/pipeline1/jobs/job2/builds/2"/>
+    <Project name="pipeline2#job1" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="pipeline2"
+             lastBuildTime="1502470729" webUrl="https://ci/teams/main/pipelines/pipeline2/jobs/job1/builds/2"/>
+    <Project name="pipeline2#job2" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="pipeline2"
+             lastBuildTime="1502470729" webUrl="https://ci/teams/main/pipelines/pipeline2/jobs/job2/builds/2"/>
+</Projects>

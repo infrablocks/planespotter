@@ -6,7 +6,7 @@ ADD package.json      /opt/planespotter/package.json
 ADD package-lock.json /opt/planespotter/package-lock.json
 RUN npm install --only=production
 
-ADD src/             /opt/planespotter/
+ADD src             /opt/planespotter/src
 
 EXPOSE 3000
-CMD ["node", "/opt/planespotter/app.js"]
+CMD ["npm", "start"]

@@ -4,11 +4,13 @@
   "description": "Concourse CC.xml Feed",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "NODE_ENV=production node src/app.js",
+    "test": "NODE_ENV=test mocha --recursive \"test/**/*.spec.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "env-var": "~2.4.3",
     "express": "~4.15.4",
     "morgan": "~1.8.2",
     "request": "~2.81.0",
@@ -16,6 +18,12 @@
     "xml": "~1.0.1"
   },
   "devDependencies": {
+    "chai": "~4.1.1",
+    "chai-http": "~3.0.0",
+    "chai-xml": "~0.3.1",
+    "freeport": "~1.0.5",
+    "mocha": "~3.5.0",
+    "nock": "~9.0.14",
     "nodemon": "~1.11.0"
   }
 }
