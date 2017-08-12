@@ -1,30 +1,12 @@
-// https://github.com/jenkinsci/cctray-xml-plugin/tree/master/src/main/java/org/jenkinsci/plugins/ccxml
 const express = require('express');
 const xml = require('xml');
 const morgan = require('morgan');
 
 const config = require('./config');
+const feed = require('./feed');
 const Concourse = require('./concourse');
 
 const app = express();
-const translateStatus = {
-  "pending": "Unknown",
-  "started": "Unknown",
-  "succeeded": "Success",
-  "failed": "Failure",
-  "errored": "Exception",
-  "aborted": "Exception",
-};
-
-const toProject = job => (
-  job.finished_build && {
-    name: job.finished_build.pipeline_name + "#" + job.finished_build.job_name,
-    activity: job.next_build ? "Building" : "Sleeping",
-    lastBuildStatus: translateStatus[job.finished_build.status],
-    lastBuildLabel: job.finished_build.pipeline_name,
-    lastBuildTime: job.finished_build.end_time,
-    webUrl: config.baseApiUri.origin + job.finished_build.url
-  });
 
 app.use(morgan('combined'));
 
@@ -44,7 +26,7 @@ app.get('/cc.xml', async (req, res) => {
 
     const projects = allJobs && allJobs.map(job => ({
       "Project": {
-        "_attr": toProject(job)
+        "_attr": feed.toProject(config.baseApiUri, job)
       }
     }));
     res.set('Content-Type', 'text/xml');
