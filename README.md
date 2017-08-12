@@ -1,4 +1,4 @@
-# cconccourse
+# Planes Spotter
 
 ## Docker image
 https://hub.docker.com/r/nningego/planespotter
