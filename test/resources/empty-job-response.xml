@@ -1,0 +1,4 @@
+<Projects>
+    <Project name="pipeline1#job1" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="pipeline1"
+             lastBuildTime="1502470729" webUrl="https://ci/teams/main/pipelines/pipeline1/jobs/job1/builds/2"/>
+</Projects>

@@ -9,13 +9,21 @@ const translateStatus = {
   "aborted": "Exception",
 };
 
-exports.toProject = (baseUri, job) => {
-  return job.finished_build && {
+const _map = (baseUri, job) => {
+  return {
     name: job.finished_build.pipeline_name + "#" + job.finished_build.job_name,
     activity: job.next_build ? "Building" : "Sleeping",
     lastBuildStatus: translateStatus[job.finished_build.status],
     lastBuildLabel: job.finished_build.pipeline_name,
     lastBuildTime: job.finished_build.end_time,
     webUrl: baseUri.origin + job.finished_build.url
+  }
+};
+
+exports.toProject = (baseUri, job) => {
+  return job.finished_build && {
+    'Project': {
+      '_attr': _map(baseUri, job)
+    }
   }
 };

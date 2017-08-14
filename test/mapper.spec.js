@@ -12,12 +12,16 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        name: 'pipeline1#job1',
-        activity: 'Sleeping',
-        lastBuildStatus: 'Success',
-        lastBuildLabel: 'pipeline1',
-        lastBuildTime: 1502470729,
-        webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+        "Project": {
+          "_attr": {
+            name: 'pipeline1#job1',
+            activity: 'Sleeping',
+            lastBuildStatus: 'Success',
+            lastBuildLabel: 'pipeline1',
+            lastBuildTime: 1502470729,
+            webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+          }
+        }
       }
     )
   });
@@ -39,12 +43,16 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        name: 'pipeline1#job1',
-        activity: 'Building',
-        lastBuildStatus: 'Success',
-        lastBuildLabel: 'pipeline1',
-        lastBuildTime: 1502470729,
-        webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+        "Project": {
+          "_attr": {
+            name: 'pipeline1#job1',
+            activity: 'Building',
+            lastBuildStatus: 'Success',
+            lastBuildLabel: 'pipeline1',
+            lastBuildTime: 1502470729,
+            webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+          }
+        }
       }
     )
   });
@@ -55,12 +63,16 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        name: 'pipeline1#job1',
-        activity: 'Sleeping',
-        lastBuildStatus: 'Failure',
-        lastBuildLabel: 'pipeline1',
-        lastBuildTime: 1502470729,
-        webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+        "Project": {
+          "_attr": {
+            name: 'pipeline1#job1',
+            activity: 'Sleeping',
+            lastBuildStatus: 'Failure',
+            lastBuildLabel: 'pipeline1',
+            lastBuildTime: 1502470729,
+            webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
+          }
+        }
       }
     )
   })

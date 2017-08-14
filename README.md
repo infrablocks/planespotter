@@ -6,7 +6,8 @@ https://hub.docker.com/r/nningego/planespotter
 # Tests
     npm test
     
-# Set up
+# Set up 
+    [Using v8.2.1 (npm v5.3.0)]
     npm install
 
 ## Needs:

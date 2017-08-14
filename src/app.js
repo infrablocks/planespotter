@@ -24,11 +24,9 @@ app.get('/cc.xml', async (req, res) => {
 
     const allJobs = await concourse.fetchAllJobs(allPipelines, basicAuthToken);
 
-    const projects = allJobs && allJobs.map(job => ({
-      "Project": {
-        "_attr": feed.toProject(config.baseApiUri, job)
-      }
-    }));
+    const projects = allJobs && allJobs.map(job => feed.toProject(config.baseApiUri, job))
+      .filter(Boolean);
+
     res.set('Content-Type', 'text/xml');
     res.send(xml([{ "Projects": projects }]));
   } catch (e) {
