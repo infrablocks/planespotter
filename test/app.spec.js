@@ -100,10 +100,9 @@ describe('App', () => {
           const expectedResponse = fs.readFileSync(
             path.join(__dirname, '/resources/empty-job-response.xml'),
             { encoding: 'utf-8' });
-            expect(res.text).xml.to.deep.equal(expectedResponse);
+          expect(res.text).xml.to.deep.equal(expectedResponse);
           done();
         });
     })
   });
-})
-;
+});

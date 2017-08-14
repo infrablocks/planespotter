@@ -12,8 +12,8 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        "Project": {
-          "_attr": {
+        'Project': {
+          '_attr': {
             name: 'pipeline1#job1',
             activity: 'Sleeping',
             lastBuildStatus: 'Success',
@@ -43,8 +43,8 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        "Project": {
-          "_attr": {
+        'Project': {
+          '_attr': {
             name: 'pipeline1#job1',
             activity: 'Building',
             lastBuildStatus: 'Success',
@@ -63,8 +63,8 @@ describe('toProjects', () => {
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
-        "Project": {
-          "_attr": {
+        'Project': {
+          '_attr': {
             name: 'pipeline1#job1',
             activity: 'Sleeping',
             lastBuildStatus: 'Failure',
@@ -76,5 +76,4 @@ describe('toProjects', () => {
       }
     )
   })
-
 });
