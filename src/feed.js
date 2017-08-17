@@ -15,7 +15,7 @@ const _map = (baseUri, job) => {
     activity: job.next_build ? 'Building' : 'Sleeping',
     lastBuildStatus: translateStatus[job.finished_build.status],
     lastBuildLabel: job.finished_build.pipeline_name,
-    lastBuildTime: job.finished_build.end_time,
+    lastBuildTime: job.finished_build.end_time && new Date(job.finished_build.end_time*1000).toISOString(),
     webUrl: baseUri.origin + job.finished_build.url
   }
 };

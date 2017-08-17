@@ -18,7 +18,7 @@ describe('toProjects', () => {
             activity: 'Sleeping',
             lastBuildStatus: 'Success',
             lastBuildLabel: 'pipeline1',
-            lastBuildTime: 1502470729,
+            lastBuildTime: '2017-08-11T16:58:49.000Z',
             webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
           }
         }
@@ -49,7 +49,7 @@ describe('toProjects', () => {
             activity: 'Building',
             lastBuildStatus: 'Success',
             lastBuildLabel: 'pipeline1',
-            lastBuildTime: 1502470729,
+            lastBuildTime: '2017-08-11T16:58:49.000Z',
             webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
           }
         }
@@ -69,7 +69,7 @@ describe('toProjects', () => {
             activity: 'Sleeping',
             lastBuildStatus: 'Failure',
             lastBuildLabel: 'pipeline1',
-            lastBuildTime: 1502470729,
+            lastBuildTime: '2017-08-11T16:58:49.000Z',
             webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`
           }
         }
