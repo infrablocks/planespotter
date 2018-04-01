@@ -10,20 +10,20 @@ class ConcourseInterceptor {
       .get('/teams/main/auth/token')
       .basicAuth({
         user: username,
-        pass: password
-      })
+        pass: password,
+      });
   }
 
   getPipelines(token) {
     return nock(this.baseUri.href)
       .get('/teams/main/pipelines')
-      .matchHeader('authorization', token)
+      .matchHeader('authorization', token);
   }
 
   getJobs(pipeline, token) {
     return nock(this.baseUri.href)
       .matchHeader('authorization', token)
-      .get(`/teams/main/pipelines/${pipeline}/jobs`)
+      .get(`/teams/main/pipelines/${pipeline}/jobs`);
   }
 }
 

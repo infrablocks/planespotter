@@ -1,0 +1,23 @@
+{
+  "extends": "airbnb-base",
+  "plugins": [
+    "mocha"
+  ],
+  "globals": {
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "describe": true,
+    "context": true,
+    "xit": true,
+    "it": true
+  },
+  // Dislike a rule? check the rationale before disabling:
+  // https://github.com/airbnb/javascript
+  "rules": {
+    "mocha/no-exclusive-tests": "error",
+    "no-console": 0,
+    "no-underscore-dangle": 0
+  }
+}

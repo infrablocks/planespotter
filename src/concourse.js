@@ -1,7 +1,6 @@
 const request = require('request-promise-native');
 
 class Concourse {
-
   constructor(baseUri, team) {
     this.baseUri = baseUri;
     this.team = team;
@@ -16,14 +15,14 @@ class Concourse {
         json: true,
         auth: {
           user: username,
-          password: password
-        }
+          password,
+        },
       });
       return `${basicAuthTokenResponse.type} ${basicAuthTokenResponse.value}`;
     } catch (e) {
       throw new Error(`Unable to fetch authorization token. Reason: ${e.message}`);
     }
-  };
+  }
 
   async fetchAllPipelines(basicAuthToken) {
     const fetchPipelinesUrl = `${this.baseUri.href}/teams/${this.team}/pipelines`;
@@ -32,14 +31,14 @@ class Concourse {
         url: fetchPipelinesUrl,
         json: true,
         headers: {
-          'Authorization': basicAuthToken
-        }
+          Authorization: basicAuthToken,
+        },
       });
     } catch (e) {
       throw new Error(`Unable to fetch pipeline information for url ${e.options.url}.
       Reason: ${e.message}`);
     }
-  };
+  }
 
   async fetchAllJobs(allPipelines, basicAuthToken) {
     try {
@@ -48,15 +47,14 @@ class Concourse {
           url: `${this.baseUri.href}${pipeline.url}/jobs`,
           json: true,
           headers: {
-            'Authorization': basicAuthToken
-          }
-        })
-      ))).reduce((xs, x) => xs.concat(x), []);
+            Authorization: basicAuthToken,
+          },
+        })))).reduce((xs, x) => xs.concat(x), []);
     } catch (e) {
       throw new Error(`Unable to fetch jobs information for url ${e.options.url}.
       Reason: ${e.message}`);
     }
-  };
+  }
 }
 
 module.exports = Concourse;

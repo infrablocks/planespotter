@@ -11,11 +11,11 @@ const fetchConfig = () => {
     team: TEAM || 'main',
     authUsername: AUTH_USERNAME,
     authPassword: AUTH_PASSWORD,
-  }
+  };
 };
 
-const config = (env) => {
-  switch (env) {
+const config = (environment) => {
+  switch (environment) {
     case 'production':
       return fetchConfig();
     case 'test':
