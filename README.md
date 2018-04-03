@@ -30,3 +30,4 @@ https://hub.docker.com/r/nningego/planespotter
     docker run --rm -e TEAM -e API_URL -e AUTH_USERNAME -e AUTH_PASSWORD -p 3000:3000 -t planespotter
 
 ## Concourse job stats on: http://localhost:3000/cc.xml
+## Concourse job stats in JSON on: http://localhost:3000/job-stats
