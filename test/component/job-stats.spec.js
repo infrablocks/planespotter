@@ -15,28 +15,29 @@ describe('App', () => {
     let concourse;
     beforeEach(() => {
       concourse = new ConcourseInterceptor(config.baseApiUri);
-    });
-
-    it('responds with status 200', (done) => {
       concourse.getAuthToken(config.authUsername, config.authPassword)
         .reply(200, {
           type: 'Bearer',
           value: 'some-token',
         });
+    });
 
+    it('responds with status 200', (done) => {
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1', 'pipeline2']));
+        .reply(200, builders.buildPipelinesFor({
+          pipelinesNames: ['pipeline1', 'pipeline2'],
+        }));
 
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline1',
-          jobs: ['job1', 'job2'],
+          pipelineName: 'pipeline1',
+          jobNames: ['job1', 'job2'],
         }));
 
       concourse.getJobs('pipeline2', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline2',
-          jobs: ['job1', 'job2'],
+          pipelineName: 'pipeline2',
+          jobNames: ['job1', 'job2'],
         }));
 
       chai.request(app)
@@ -51,14 +52,8 @@ describe('App', () => {
     });
 
     it('responds with no projects if job has no finished builds', (done) => {
-      concourse.getAuthToken(config.authUsername, config.authPassword)
-        .reply(200, {
-          type: 'Bearer',
-          value: 'some-token',
-        });
-
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1']));
+        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1'] }));
 
       const emptyJob = {
         next_build: null,
@@ -66,7 +61,7 @@ describe('App', () => {
       };
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, [
-          builders.buildJobFor('pipeline1', 'job1'),
+          builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' }),
           emptyJob,
         ]);
 
@@ -82,25 +77,19 @@ describe('App', () => {
     });
 
     it('responds with jobs with resources', (done) => {
-      concourse.getAuthToken(config.authUsername, config.authPassword)
-        .reply(200, {
-          type: 'Bearer',
-          value: 'some-token',
-        });
-
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1', 'pipeline2']));
+        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1', 'pipeline2'] }));
 
       const p1Jobs = builders.buildJobsFor({
-        pipeline: 'pipeline1',
-        jobs: ['job1'],
+        pipelineName: 'pipeline1',
+        jobNames: ['job1'],
       });
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, p1Jobs);
 
       const p2Jobs = builders.buildJobsFor({
-        pipeline: 'pipeline2',
-        jobs: ['job1'],
+        pipelineName: 'pipeline2',
+        jobNames: ['job1'],
       });
       concourse.getJobs('pipeline2', 'Bearer some-token')
         .reply(200, p2Jobs);
@@ -108,7 +97,7 @@ describe('App', () => {
       const resource1 = builders.buildResourceFor({
         resourceName: 'resource1',
         resourceType: 'semver',
-        resourceVersion: { number: '0.1.0' },
+        resourceVersion: '0.1.0',
       });
       concourse.getJobResources('pipeline1-job1-id', 'Bearer some-token')
         .reply(200, builders.buildResourcesFor({ resources: [resource1] }));
@@ -116,7 +105,7 @@ describe('App', () => {
       const resource2 = builders.buildResourceFor({
         resourceName: 'resource2',
         resourceType: 'git',
-        resourceVersion: { ref: 'cd1e2bd19e03a81132a23b2025920577f84e37' },
+        resourceVersion: 'cd1e2bd19e03a81132a23b2025920577f84e37',
       });
       concourse.getJobResources('pipeline2-job1-id', 'Bearer some-token')
         .reply(200, builders.buildResourcesFor({ resources: [resource2] }));
@@ -134,25 +123,19 @@ describe('App', () => {
     });
 
     it('responds with jobs with no resources', (done) => {
-      concourse.getAuthToken(config.authUsername, config.authPassword)
-        .reply(200, {
-          type: 'Bearer',
-          value: 'some-token',
-        });
-
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1', 'pipeline2']));
+        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1', 'pipeline2'] }));
 
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline1',
-          jobs: ['job1'],
+          pipelineName: 'pipeline1',
+          jobNames: ['job1'],
         }));
 
       concourse.getJobs('pipeline2', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline2',
-          jobs: ['job1'],
+          pipelineName: 'pipeline2',
+          jobNames: ['job1'],
         }));
 
       concourse.getJobResources('pipeline1-job1-id', 'Bearer some-token')

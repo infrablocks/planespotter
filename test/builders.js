@@ -1,34 +1,56 @@
 const chance = require('chance').Chance();
 
-exports.buildPipelinesFor = pipelines => pipelines.map(pipeline => ({
-  id: chance.natural(),
-  name: pipeline,
-  url: `/teams/main/pipelines/${pipeline}`,
-}));
+const _pickRandom = list => list[Math.floor(Math.random() * list.length)];
 
-exports.buildJobFor = (pipeline, job) => ({
-  next_build: null,
-  finished_build: {
-    id: `${pipeline}-${job}-id`,
-    team_name: 'main',
-    status: 'succeeded',
-    job_name: job,
-    url: `/teams/main/pipelines/${pipeline}/jobs/${job}/builds/2`,
-    pipeline_name: pipeline,
-    end_time: 1502470729,
-  },
-});
+exports.buildPipelinesFor =
+  ({
+    pipelinesNames = [chance.word()],
+  } = {}) =>
+    pipelinesNames.map(pipelineName => ({
+      id: chance.natural(),
+      name: pipelineName,
+      url: `/teams/main/pipelines/${pipelineName}`,
+    }));
 
-exports.buildResourceFor = ({ resourceName, resourceType, resourceVersion }) => ({
-  name: resourceName,
-  resource: resourceName,
-  type: resourceType,
-  version: resourceVersion,
-});
+exports.buildJobFor =
+  ({
+    pipelineName = chance.word(),
+    jobName = chance.word(),
+    jobId = `${pipelineName}-${jobName}-id`,
+  } = {}) => ({
+    next_build: null,
+    finished_build: {
+      id: jobId,
+      team_name: 'main',
+      status: 'succeeded',
+      job_name: jobName,
+      url: `/teams/main/pipelines/${pipelineName}/jobs/${jobName}/builds/2`,
+      pipeline_name: pipelineName,
+      end_time: 1502470729,
+    },
+  });
 
+exports.buildResourceFor =
+  ({
+    resourceName = chance.word(),
+    resourceType = _pickRandom(['git', 'semver']),
+    resourceVersion = chance.guid(),
+  } = {}) => ({
+    name: resourceName,
+    resource: resourceName,
+    type: resourceType,
+    version: { thing: resourceVersion },
+  });
 
-exports.buildResourcesFor = ({ resources }) => ({
-  inputs: resources,
-});
+exports.buildResourcesFor =
+  ({ resources }) => ({
+    inputs: resources,
+  });
 
-exports.buildJobsFor = ({ pipeline, jobs }) => jobs.map(job => this.buildJobFor(pipeline, job));
+exports.buildJobsFor =
+  ({
+    pipelineName = chance.word(),
+    jobNames = [chance.word()],
+    jobs = jobNames.map(jobName =>
+      this.buildJobFor({ pipelineName, jobName })),
+  } = {}) => jobs;

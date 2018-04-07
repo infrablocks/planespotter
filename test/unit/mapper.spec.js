@@ -1,11 +1,11 @@
 const { expect } = require('chai');
-const builders = require('./builders');
-const feed = require('../src/feed');
-const config = require('../src/config');
+const builders = require('../builders');
+const feed = require('../../src/feed');
+const config = require('../../src/config');
 
 describe('toProjects', () => {
   it('should map successful job to project', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     const project = feed.toProject(config.baseApiUri, job);
 
     expect(project).to.eql({
@@ -34,7 +34,7 @@ describe('toProjects', () => {
   });
 
   it('returns job as Building if next build info present', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.next_build = { id: 123 };
     const project = feed.toProject(config.baseApiUri, job);
 
@@ -53,7 +53,7 @@ describe('toProjects', () => {
   });
 
   it('returns failed job if status failed', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.finished_build.status = 'failed';
     const project = feed.toProject(config.baseApiUri, job);
 
@@ -72,7 +72,7 @@ describe('toProjects', () => {
   });
 
   it('returns failed job is errored', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.finished_build.status = 'errored';
     const project = feed.toProject(config.baseApiUri, job);
 
@@ -93,7 +93,7 @@ describe('toProjects', () => {
 
 describe('toJobStats', () => {
   it('should map successful job to project', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     const project = feed.toJobStats(config.baseApiUri, job);
 
     expect(project).to.eql({
@@ -119,7 +119,7 @@ describe('toJobStats', () => {
   });
 
   it('returns job as Building if next build info present', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.next_build = { id: 123 };
     const project = feed.toJobStats(config.baseApiUri, job);
 
@@ -135,7 +135,7 @@ describe('toJobStats', () => {
   });
 
   it('returns failed job if status failed', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.finished_build.status = 'failed';
     const project = feed.toJobStats(config.baseApiUri, job);
 
@@ -151,7 +151,7 @@ describe('toJobStats', () => {
   });
 
   it('returns failed job is errored', () => {
-    const job = builders.buildJobFor('pipeline1', 'job1');
+    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
     job.finished_build.status = 'errored';
     const project = feed.toJobStats(config.baseApiUri, job);
 
@@ -169,34 +169,26 @@ describe('toJobStats', () => {
 
 describe('toJobResources', () => {
   it('should map input resources', () => {
+    const resource1 = builders.buildResourceFor();
+    const resource2 = builders.buildResourceFor();
     const jobResources = builders.buildResourcesFor({
-      resources: [builders.buildResourceFor({
-        resourceName: 'resource1',
-        resourceType: 'semver',
-        resourceVersion: { number: '0.1.0' },
-      }),
-      builders.buildResourceFor({
-        resourceName: 'resource1',
-        resourceType: 'thing',
-        resourceVersion: { something: 'abc' },
-      })],
+      resources: [
+        resource1,
+        resource2,
+      ],
     });
     const project = feed.toJobResources(jobResources);
 
     expect(project).to.eql([
       {
-        name: 'resource1',
-        type: 'semver',
-        version: {
-          number: '0.1.0',
-        },
+        name: resource1.name,
+        type: resource1.type,
+        version: resource1.version,
       },
       {
-        name: 'resource1',
-        type: 'thing',
-        version: {
-          something: 'abc',
-        },
+        name: resource2.name,
+        type: resource2.type,
+        version: resource2.version,
       },
     ]);
   });

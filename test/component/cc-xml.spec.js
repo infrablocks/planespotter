@@ -17,28 +17,32 @@ describe('App', () => {
     let concourse;
     beforeEach(() => {
       concourse = new ConcourseInterceptor(config.baseApiUri);
-    });
-
-    it('responds with status 200', (done) => {
       concourse.getAuthToken(config.authUsername, config.authPassword)
         .reply(200, {
           type: 'Bearer',
           value: 'some-token',
         });
+    });
+
+    it('responds with status 200', (done) => {
+      const pipeline1 = 'pipeline1';
+      const pipeline2 = 'pipeline2';
 
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1', 'pipeline2']));
+        .reply(200, builders.buildPipelinesFor({
+          pipelinesNames: [pipeline1, pipeline2],
+        }));
 
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline1',
-          jobs: ['job1', 'job2'],
+          pipelineName: pipeline1,
+          jobNames: ['job1', 'job2'],
         }));
 
       concourse.getJobs('pipeline2', 'Bearer some-token')
         .reply(200, builders.buildJobsFor({
-          pipeline: 'pipeline2',
-          jobs: ['job1', 'job2'],
+          pipelineName: 'pipeline2',
+          jobNames: ['job1', 'job2'],
         }));
 
       chai.request(app)
@@ -53,14 +57,8 @@ describe('App', () => {
     });
 
     it('responds with no projects if job has no finished builds', (done) => {
-      concourse.getAuthToken(config.authUsername, config.authPassword)
-        .reply(200, {
-          type: 'Bearer',
-          value: 'some-token',
-        });
-
       concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor(['pipeline1']));
+        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1'] }));
 
       const emptyJob = {
         next_build: null,
@@ -68,7 +66,7 @@ describe('App', () => {
       };
       concourse.getJobs('pipeline1', 'Bearer some-token')
         .reply(200, [
-          builders.buildJobFor('pipeline1', 'job1'),
+          builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' }),
           emptyJob,
         ]);
 

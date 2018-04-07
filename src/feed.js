@@ -31,11 +31,7 @@ const _mapJson = (baseUri, job) => ({
 });
 
 const _mapResources = resources => resources.inputs
-  && resources.inputs.map(input => ({
-    name: input.name,
-    type: input.type,
-    version: input.version,
-  }));
+  && resources.inputs.map(({ resource: name, type, version }) => ({ name, type, version }));
 
 exports.toProject = (baseUri, job) => job.finished_build && {
   Project: {
