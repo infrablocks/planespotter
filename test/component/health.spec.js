@@ -1,12 +1,10 @@
 const { expect, use } = require('chai');
 const chai = require('chai');
-const chaiXml = require('chai-xml');
 const chaiHttp = require('chai-http');
 
 const app = require('../../src/app');
 
 use(chaiHttp);
-use(chaiXml);
 
 describe('App', () => {
   describe('/', () => {

@@ -1,13 +1,12 @@
 const { expect, use } = require('chai');
 const chai = require('chai');
-const fs = require('fs');
-const path = require('path');
 const chaiXml = require('chai-xml');
 const chaiHttp = require('chai-http');
 
 const app = require('../../src/app');
 const config = require('../../src/config');
 const builders = require('./../builders');
+const helpers = require('./../helpers');
 const ConcourseInterceptor = require('./../interceptors/ConcourseInterceptor');
 
 use(chaiHttp);
@@ -47,10 +46,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = fs.readFileSync(
-            path.join(__dirname, '../resources/success-response.xml'),
-            'utf-8',
-          );
+          const expectedResponse = helpers.readXmlFile('success-response');
           expect(res.text).xml.to.deep.equal(expectedResponse);
           done();
         });
@@ -81,10 +77,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = fs.readFileSync(
-            path.join(__dirname, '../resources/empty-job-response.xml'),
-            'utf-8',
-          );
+          const expectedResponse = helpers.readXmlFile('empty-job-response');
           expect(res.text).xml.to.deep.equal(expectedResponse);
           done();
         });

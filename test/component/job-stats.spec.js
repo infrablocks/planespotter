@@ -1,6 +1,5 @@
 const { expect, use } = require('chai');
 const chai = require('chai');
-const chaiXml = require('chai-xml');
 const chaiHttp = require('chai-http');
 
 const app = require('../../src/app');
@@ -10,7 +9,6 @@ const helpers = require('../helpers');
 const ConcourseInterceptor = require('./../interceptors/ConcourseInterceptor');
 
 use(chaiHttp);
-use(chaiXml);
 
 describe('App', () => {
   describe('/job-stats', () => {
@@ -46,7 +44,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = helpers.readFile('success-response');
+          const expectedResponse = helpers.readJsonFile('success-response');
           expect(JSON.parse(res.text)).to.deep.equal(JSON.parse(expectedResponse));
           done();
         });
@@ -77,7 +75,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = helpers.readFile('empty-job-response');
+          const expectedResponse = helpers.readJsonFile('empty-job-response');
           expect(JSON.parse(res.text)).to.deep.equal(JSON.parse(expectedResponse));
           done();
         });
@@ -129,7 +127,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = helpers.readFile('success-response-with-resources');
+          const expectedResponse = helpers.readJsonFile('success-response-with-resources');
           expect(JSON.parse(res.text)).to.deep.equal(JSON.parse(expectedResponse));
           done();
         });
@@ -169,7 +167,7 @@ describe('App', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          const expectedResponse = helpers.readFile('success-response-with-empty-resources');
+          const expectedResponse = helpers.readJsonFile('success-response-with-empty-resources');
           expect(JSON.parse(res.text)).to.deep.equal(JSON.parse(expectedResponse));
           done();
         });
