@@ -24,7 +24,7 @@ app.get('/cc.xml', async (req, res) => {
 
     const allPipelines = await concourse.fetchAllPipelines(basicAuthToken);
 
-    const allJobs = await concourse.fetchAllJobs(allPipelines, basicAuthToken);
+    const allJobs = await concourse.fetchAllJobs(basicAuthToken, allPipelines);
 
     const projects = allJobs &&
       allJobs.map(job => feed.toProject(config.baseApiUri, job))
@@ -40,7 +40,6 @@ app.get('/cc.xml', async (req, res) => {
   }
 });
 
-
 app.get('/job-stats', async (req, res) => {
   try {
     const concourse = new Concourse(config.baseApiUri, config.team);
@@ -50,11 +49,21 @@ app.get('/job-stats', async (req, res) => {
 
     const allPipelines = await concourse.fetchAllPipelines(basicAuthToken);
 
-    const allJobs = await concourse.fetchAllJobs(allPipelines, basicAuthToken);
+    const allJobs = await concourse.fetchAllJobs(basicAuthToken, allPipelines);
 
-    const projects = allJobs &&
+    let projects = allJobs &&
       allJobs.map(job => feed.toJobStats(config.baseApiUri, job))
         .filter(Boolean);
+
+    const { resources } = req.query;
+    console.log('resources', resources);
+    if (resources === 'inputs') {
+      projects = await Promise.all(projects.map(job =>
+        concourse.fetchJobResources(basicAuthToken, job)
+          .then(fetchedResources =>
+            ({ ...job, resources: feed.toJobResources(fetchedResources) }))));
+    }
+
     res.set('Content-Type', 'application/json');
     res.send(projects);
   } catch (e) {

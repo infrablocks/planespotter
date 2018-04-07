@@ -1,5 +1,6 @@
 [
   {
+    "id": "pipeline1-job1-id",
     "name": "pipeline1#job1",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",
@@ -8,6 +9,7 @@
     "webUrl": "https://ci/teams/main/pipelines/pipeline1/jobs/job1/builds/2"
   },
   {
+    "id": "pipeline1-job2-id",
     "name": "pipeline1#job2",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",
@@ -16,6 +18,7 @@
     "webUrl": "https://ci/teams/main/pipelines/pipeline1/jobs/job2/builds/2"
   },
   {
+    "id": "pipeline2-job1-id",
     "name": "pipeline2#job1",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",
@@ -24,6 +27,7 @@
     "webUrl": "https://ci/teams/main/pipelines/pipeline2/jobs/job1/builds/2"
   },
   {
+    "id": "pipeline2-job2-id",
     "name": "pipeline2#job2",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",

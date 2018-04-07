@@ -25,6 +25,12 @@ class ConcourseInterceptor {
       .matchHeader('authorization', token)
       .get(`/teams/main/pipelines/${pipeline}/jobs`);
   }
+
+  getJobResources(jobId, token) {
+    return nock(this.baseUri.href)
+      .matchHeader('authorization', token)
+      .get(`/builds/${jobId}/resources`);
+  }
 }
 
 module.exports = ConcourseInterceptor;

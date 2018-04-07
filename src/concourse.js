@@ -40,7 +40,7 @@ class Concourse {
     }
   }
 
-  async fetchAllJobs(allPipelines, basicAuthToken) {
+  async fetchAllJobs(basicAuthToken, allPipelines) {
     try {
       return (await Promise.all(allPipelines.map(pipeline =>
         request.get({
@@ -52,6 +52,21 @@ class Concourse {
         })))).reduce((xs, x) => xs.concat(x), []);
     } catch (e) {
       throw new Error(`Unable to fetch jobs information for url ${e.options.url}.
+      Reason: ${e.message}`);
+    }
+  }
+
+  async fetchJobResources(basicAuthToken, job) {
+    try {
+      return await request.get({
+        url: `${this.baseUri.href}/builds/${job.id}/resources`,
+        json: true,
+        headers: {
+          Authorization: basicAuthToken,
+        },
+      });
+    } catch (e) {
+      throw new Error(`Unable to fetch job resources for url ${e.options.url}.
       Reason: ${e.message}`);
     }
   }

@@ -97,6 +97,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.baseApiUri, job);
 
     expect(project).to.eql({
+      id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Success',
@@ -123,6 +124,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.baseApiUri, job);
 
     expect(project).to.eql({
+      id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
       activity: 'Building',
       lastBuildStatus: 'Success',
@@ -138,6 +140,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.baseApiUri, job);
 
     expect(project).to.eql({
+      id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Failure',
@@ -153,6 +156,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.baseApiUri, job);
 
     expect(project).to.eql({
+      id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Failure',
