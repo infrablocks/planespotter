@@ -166,3 +166,48 @@ describe('toJobStats', () => {
     });
   });
 });
+
+describe('toJobResources', () => {
+  it('should map input resources', () => {
+    const jobResources = builders.buildResourcesFor({
+      resources: [builders.buildResourceFor({
+        resourceName: 'resource1',
+        resourceType: 'semver',
+        resourceVersion: { number: '0.1.0' },
+      }),
+      builders.buildResourceFor({
+        resourceName: 'resource1',
+        resourceType: 'thing',
+        resourceVersion: { something: 'abc' },
+      })],
+    });
+    const project = feed.toJobResources(jobResources);
+
+    expect(project).to.eql([
+      {
+        name: 'resource1',
+        type: 'semver',
+        version: {
+          number: '0.1.0',
+        },
+      },
+      {
+        name: 'resource1',
+        type: 'thing',
+        version: {
+          something: 'abc',
+        },
+      },
+    ]);
+  });
+
+  it('should map empty input resources', () => {
+    const jobResources = builders.buildResourcesFor({
+      resources: [],
+    });
+
+    const project = feed.toJobResources(jobResources);
+
+    expect(project).to.eql([]);
+  });
+});
