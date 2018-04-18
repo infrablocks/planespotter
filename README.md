@@ -15,10 +15,10 @@ https://hub.docker.com/r/nningego/planespotter
     http://localhost:3000/cc.xml
   
 ## Concourse job stats in JSON on: 
-    http://localhost:3000/job-stats
+    http://localhost:3000/job-stats.json
   
 ## Concourse job stats with input resources in JSON on:
-    http://localhost:3000/job-stats?resources=inputs
+    http://localhost:3000/job-stats.json?resources=inputs
 
 ## Contribute  
 

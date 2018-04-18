@@ -40,7 +40,7 @@ app.get('/cc.xml', async (req, res) => {
   }
 });
 
-app.get('/job-stats', async (req, res) => {
+app.get('/job-stats.json', async (req, res) => {
   try {
     const concourse = new Concourse(config.baseApiUri, config.team);
 

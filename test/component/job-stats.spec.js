@@ -11,7 +11,7 @@ const ConcourseInterceptor = require('./../interceptors/ConcourseInterceptor');
 use(chaiHttp);
 
 describe('App', () => {
-  describe('/job-stats', () => {
+  describe('/job-stats.json', () => {
     let concourse;
     beforeEach(() => {
       concourse = new ConcourseInterceptor(config.baseApiUri);
@@ -41,7 +41,7 @@ describe('App', () => {
         }));
 
       chai.request(app)
-        .get('/job-stats')
+        .get('/job-stats.json')
         .end((err, res) => {
           expect(res).to.have.status(200);
 
@@ -66,7 +66,7 @@ describe('App', () => {
         ]);
 
       chai.request(app)
-        .get('/job-stats')
+        .get('/job-stats.json')
         .end((err, res) => {
           expect(res).to.have.status(200);
 
@@ -111,7 +111,7 @@ describe('App', () => {
         .reply(200, builders.buildResourcesFor({ resources: [resource2] }));
 
       chai.request(app)
-        .get('/job-stats')
+        .get('/job-stats.json')
         .query({ resources: 'inputs' })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -145,7 +145,7 @@ describe('App', () => {
         .reply(200, builders.buildResourcesFor({ resources: [] }));
 
       chai.request(app)
-        .get('/job-stats')
+        .get('/job-stats.json')
         .query({ resources: 'inputs' })
         .end((err, res) => {
           expect(res).to.have.status(200);
