@@ -56,7 +56,6 @@ app.get('/job-stats', async (req, res) => {
         .filter(Boolean);
 
     const { resources } = req.query;
-    console.log('resources', resources);
     if (resources === 'inputs') {
       projects = await Promise.all(projects.map(job =>
         concourse.fetchJobResources(basicAuthToken, job)
