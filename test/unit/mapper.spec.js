@@ -99,6 +99,8 @@ describe('toJobStats', () => {
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
+      pipeline: 'pipeline1',
+      job: 'job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Success',
       lastBuildLabel: 'pipeline1',
@@ -126,6 +128,8 @@ describe('toJobStats', () => {
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
+      pipeline: 'pipeline1',
+      job: 'job1',
       activity: 'Building',
       lastBuildStatus: 'Success',
       lastBuildLabel: 'pipeline1',
@@ -142,6 +146,8 @@ describe('toJobStats', () => {
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
+      pipeline: 'pipeline1',
+      job: 'job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Failure',
       lastBuildLabel: 'pipeline1',
@@ -158,6 +164,8 @@ describe('toJobStats', () => {
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
       name: 'pipeline1#job1',
+      pipeline: 'pipeline1',
+      job: 'job1',
       activity: 'Sleeping',
       lastBuildStatus: 'Failure',
       lastBuildLabel: 'pipeline1',

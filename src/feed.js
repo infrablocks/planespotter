@@ -21,6 +21,8 @@ const _mapCCXML = (baseUri, job) => ({
 
 const _mapJson = (baseUri, job) => ({
   id: job.finished_build.id,
+  pipeline: job.finished_build.pipeline_name,
+  job: job.finished_build.job_name,
   name: `${job.finished_build.pipeline_name}#${job.finished_build.job_name}`,
   activity: job.next_build ? 'Building' : 'Sleeping',
   lastBuildStatus: translateStatus[job.finished_build.status],
@@ -31,7 +33,11 @@ const _mapJson = (baseUri, job) => ({
 });
 
 const _mapResources = resources => resources.inputs
-  && resources.inputs.map(({ resource: name, type, version }) => ({ name, type, version }));
+  && resources.inputs.map(({ resource: name, type, version }) => ({
+    name,
+    type,
+    version,
+  }));
 
 exports.toProject = (baseUri, job) => job.finished_build && {
   Project: {

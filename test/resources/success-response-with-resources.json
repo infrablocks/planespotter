@@ -2,6 +2,8 @@
   {
     "id": "pipeline1-job1-id",
     "name": "pipeline1#job1",
+    "pipeline": "pipeline1",
+    "job": "job1",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",
     "lastBuildLabel": "pipeline1",
@@ -20,6 +22,8 @@
   {
     "id": "pipeline2-job1-id",
     "name": "pipeline2#job1",
+    "pipeline": "pipeline2",
+    "job": "job1",
     "activity": "Sleeping",
     "lastBuildStatus": "Success",
     "lastBuildLabel": "pipeline2",
