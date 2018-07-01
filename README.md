@@ -39,3 +39,9 @@ https://hub.docker.com/r/nningego/planespotter
 ### Start with docker:
     docker build . -t planespotter
     docker run --rm -e TEAM -e API_URL -e AUTH_USERNAME -e AUTH_PASSWORD -p 3000:3000 -t planespotter
+    
+### TODOs:
+
+[] Upgrade npm dependencies
+
+[] Use http://github.com/infrablocks/concourse.js
