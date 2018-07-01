@@ -3,6 +3,8 @@
 ## Docker image
 https://hub.docker.com/r/nningego/planespotter
 
+- v3.0.0 supports concourse 3.14.1 and above
+
 ## Needs:
 
     API_URL [concourse API, example: https://ci.server/api/v1]
