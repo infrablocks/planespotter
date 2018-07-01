@@ -16,7 +16,7 @@ const _mapCCXML = (baseUri, job) => ({
   lastBuildLabel: job.finished_build.pipeline_name,
   lastBuildTime: job.finished_build.end_time
   && new Date(job.finished_build.end_time * 1000).toISOString(),
-  webUrl: baseUri.origin + job.finished_build.url,
+  webUrl: baseUri.origin + job.finished_build.api_url,
 });
 
 const _mapJson = (baseUri, job) => ({
@@ -29,7 +29,7 @@ const _mapJson = (baseUri, job) => ({
   lastBuildLabel: job.finished_build.pipeline_name,
   lastBuildTime: job.finished_build.end_time
   && new Date(job.finished_build.end_time * 1000).toISOString(),
-  webUrl: baseUri.origin + job.finished_build.url,
+  webUrl: baseUri.origin + job.finished_build.api_url,
 });
 
 const _mapResources = resources => resources.inputs

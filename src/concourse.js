@@ -41,10 +41,13 @@ class Concourse {
   }
 
   async fetchAllJobs(basicAuthToken, allPipelines) {
+    const fetchJobsUrl
+      = pipeline => `${this.baseUri.href}/teams/${this.team}/pipelines/${pipeline.name}/jobs`;
+
     try {
       return (await Promise.all(allPipelines.map(pipeline =>
         request.get({
-          url: `${this.baseUri.href}${pipeline.url}/jobs`,
+          url: fetchJobsUrl(pipeline),
           json: true,
           headers: {
             Authorization: basicAuthToken,

@@ -9,7 +9,6 @@ exports.buildPipelinesFor =
     pipelinesNames.map(pipelineName => ({
       id: chance.natural(),
       name: pipelineName,
-      url: `/teams/main/pipelines/${pipelineName}`,
     }));
 
 exports.buildJobFor =
@@ -24,7 +23,7 @@ exports.buildJobFor =
       team_name: 'main',
       status: 'succeeded',
       job_name: jobName,
-      url: `/teams/main/pipelines/${pipelineName}/jobs/${jobName}/builds/2`,
+      api_url: `/teams/main/pipelines/${pipelineName}/jobs/${jobName}/builds/2`,
       pipeline_name: pipelineName,
       end_time: 1502470729,
     },
