@@ -1,35 +1,75 @@
-const nock = require('nock');
+const hock = require('hock');
+const formurlencoded = require('form-urlencoded').default;
 
 class ConcourseInterceptor {
-  constructor(baseUri) {
-    this.baseUri = baseUri;
+  constructor(url, teamName, authentication) {
+    this.teamName = teamName;
+    this.authentication = authentication;
+    this.mock = hock.createHock();
   }
 
-  getAuthToken(username, password) {
-    return nock(this.baseUri.href)
-      .get('/teams/main/auth/token')
-      .basicAuth({
-        user: username,
-        pass: password,
+  getHandler() {
+    return this.mock.handler;
+  }
+
+  onGetInfo() {
+    return this.mock.get('/api/v1/info');
+  }
+
+  onCreateToken() {
+    return this.mock
+      .post(
+        '/sky/token',
+        formurlencoded({
+          grant_type: 'password',
+          username: this.authentication.username,
+          password: this.authentication.password,
+          scope: 'openid+profile+email+federated:id+groups',
+        }),
+      );
+  }
+
+  onFetchAllTeams(token) {
+    return this.mock
+      .get('/api/v1/teams', {
+        Authorization: `Bearer ${token.access_token}`,
+      })
+      .many();
+  }
+
+  onFetchAllPipelines(token) {
+    return this.mock
+      .get(`/api/v1/teams/${this.teamName}/pipelines`, {
+        Authorization: `Bearer ${token.access_token}`,
       });
   }
 
-  getPipelines(token) {
-    return nock(this.baseUri.href)
-      .get('/teams/main/pipelines')
-      .matchHeader('authorization', token);
+  onFetchPipeline(pipelineName, token) {
+    return this.mock
+      .get(`/api/v1/teams/${this.teamName}/pipelines/${pipelineName}`, {
+        Authorization: `Bearer ${token.access_token}`,
+      });
   }
 
-  getJobs(pipeline, token) {
-    return nock(this.baseUri.href)
-      .matchHeader('authorization', token)
-      .get(`/teams/main/pipelines/${pipeline}/jobs`);
+  onFetchAllJobs(pipelineName, token) {
+    return this.mock
+      .get(`/api/v1/teams/${this.teamName}/pipelines/${pipelineName}/jobs`, {
+        Authorization: `Bearer ${token.access_token}`,
+      });
   }
 
-  getJobResources(jobId, token) {
-    return nock(this.baseUri.href)
-      .matchHeader('authorization', token)
-      .get(`/builds/${jobId}/resources`);
+  onFetchBuild(buildId, token) {
+    return this.mock
+      .get(`/api/v1/builds/${buildId}`, {
+        Authorization: `Bearer ${token.access_token}`,
+      });
+  }
+
+  onFetchBuildResources(buildId, token) {
+    return this.mock
+      .get(`/api/v1/builds/${buildId}/resources`, {
+        Authorization: `Bearer ${token.access_token}`,
+      });
   }
 }
 

@@ -1,12 +1,19 @@
 const { expect } = require('chai');
+const camelcaseKeysDeep = require('camelcase-keys-deep');
+
 const builders = require('../builders');
 const feed = require('../../src/feed');
 const config = require('../../src/config');
 
 describe('toProjects', () => {
   it('should map successful job to project', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    const project = feed.toProject(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+
+    const project = feed.toProject(config.url, job);
 
     expect(project).to.eql({
       Project: {
@@ -16,7 +23,7 @@ describe('toProjects', () => {
           lastBuildStatus: 'Success',
           lastBuildLabel: 'pipeline1',
           lastBuildTime: '2017-08-11T16:58:49.000Z',
-          webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+          webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
         },
       },
     });
@@ -24,19 +31,24 @@ describe('toProjects', () => {
 
   it('returns empty project if job with no build history', () => {
     const newJob = {
-      next_build: null,
-      finished_build: null,
+      nextBuild: null,
+      finishedBuild: null,
     };
 
-    const project = feed.toProject(config.baseApiUri, newJob);
+    const project = feed.toProject(config.url, newJob);
 
     expect(project).to.eql(null);
   });
 
   it('returns job as Building if next build info present', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.next_build = { id: 123 };
-    const project = feed.toProject(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.nextBuild = { id: 123 };
+
+    const project = feed.toProject(config.url, job);
 
     expect(project).to.eql({
       Project: {
@@ -46,16 +58,21 @@ describe('toProjects', () => {
           lastBuildStatus: 'Success',
           lastBuildLabel: 'pipeline1',
           lastBuildTime: '2017-08-11T16:58:49.000Z',
-          webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+          webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
         },
       },
     });
   });
 
   it('returns failed job if status failed', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.finished_build.status = 'failed';
-    const project = feed.toProject(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.finishedBuild.status = 'failed';
+
+    const project = feed.toProject(config.url, job);
 
     expect(project).to.eql({
       Project: {
@@ -65,16 +82,21 @@ describe('toProjects', () => {
           lastBuildStatus: 'Failure',
           lastBuildLabel: 'pipeline1',
           lastBuildTime: '2017-08-11T16:58:49.000Z',
-          webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+          webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
         },
       },
     });
   });
 
   it('returns failed job is errored', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.finished_build.status = 'errored';
-    const project = feed.toProject(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.finishedBuild.status = 'errored';
+
+    const project = feed.toProject(config.url, job);
 
     expect(project).to.eql({
       Project: {
@@ -84,7 +106,7 @@ describe('toProjects', () => {
           lastBuildStatus: 'Failure',
           lastBuildLabel: 'pipeline1',
           lastBuildTime: '2017-08-11T16:58:49.000Z',
-          webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+          webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
         },
       },
     });
@@ -93,8 +115,13 @@ describe('toProjects', () => {
 
 describe('toJobStats', () => {
   it('should map successful job to project', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    const project = feed.toJobStats(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+
+    const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
@@ -105,25 +132,30 @@ describe('toJobStats', () => {
       lastBuildStatus: 'Success',
       lastBuildLabel: 'pipeline1',
       lastBuildTime: '2017-08-11T16:58:49.000Z',
-      webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+      webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
     });
   });
 
   it('returns empty project if job with no build history', () => {
     const newJob = {
-      next_build: null,
-      finished_build: null,
+      nextBuild: null,
+      finishedBuild: null,
     };
 
-    const project = feed.toJobStats(config.baseApiUri, newJob);
+    const project = feed.toJobStats(config.url, newJob);
 
     expect(project).to.eql(null);
   });
 
   it('returns job as Building if next build info present', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.next_build = { id: 123 };
-    const project = feed.toJobStats(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.nextBuild = { id: 123 };
+
+    const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
@@ -134,14 +166,19 @@ describe('toJobStats', () => {
       lastBuildStatus: 'Success',
       lastBuildLabel: 'pipeline1',
       lastBuildTime: '2017-08-11T16:58:49.000Z',
-      webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+      webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
     });
   });
 
   it('returns failed job if status failed', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.finished_build.status = 'failed';
-    const project = feed.toJobStats(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.finishedBuild.status = 'failed';
+
+    const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
@@ -152,14 +189,19 @@ describe('toJobStats', () => {
       lastBuildStatus: 'Failure',
       lastBuildLabel: 'pipeline1',
       lastBuildTime: '2017-08-11T16:58:49.000Z',
-      webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+      webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
     });
   });
 
   it('returns failed job is errored', () => {
-    const job = builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' });
-    job.finished_build.status = 'errored';
-    const project = feed.toJobStats(config.baseApiUri, job);
+    const job =
+      camelcaseKeysDeep(builders.buildJobFor({
+        pipelineName: 'pipeline1',
+        jobName: 'job1',
+      }));
+    job.finishedBuild.status = 'errored';
+
+    const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
       id: 'pipeline1-job1-id',
@@ -170,7 +212,7 @@ describe('toJobStats', () => {
       lastBuildStatus: 'Failure',
       lastBuildLabel: 'pipeline1',
       lastBuildTime: '2017-08-11T16:58:49.000Z',
-      webUrl: `${config.baseApiUri.origin}/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
+      webUrl: `${config.url}api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2`,
     });
   });
 });

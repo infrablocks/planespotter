@@ -1,16 +1,18 @@
 const env = require('env-var');
-const { URL } = require('url');
+const url = require('url');
 
 const fetchConfig = () => {
-  const API_URL = env('API_URL').required().asString();
+  const URL = env('URL').required().asString();
   const TEAM = env('TEAM').asString();
   const AUTH_USERNAME = env('AUTH_USERNAME').required().asString();
   const AUTH_PASSWORD = env('AUTH_PASSWORD').required().asString();
   return {
-    baseApiUri: new URL(API_URL),
-    team: TEAM || 'main',
-    authUsername: AUTH_USERNAME,
-    authPassword: AUTH_PASSWORD,
+    url: new url.URL(URL),
+    teamName: TEAM || 'main',
+    authentication: {
+      username: AUTH_USERNAME,
+      password: AUTH_PASSWORD,
+    },
   };
 };
 
@@ -20,10 +22,12 @@ const config = (environment) => {
       return fetchConfig();
     case 'test':
       return {
-        baseApiUri: new URL('https://ci/api/v1'),
-        team: 'main',
-        authUsername: 'some-username',
-        authPassword: 'some-password',
+        url: new url.URL('http://localhost:1337'),
+        teamName: 'main',
+        authentication: {
+          username: 'some-username',
+          password: 'some-password',
+        },
       };
     default:
       throw new Error('Must set NODE_ENV to production/test');
