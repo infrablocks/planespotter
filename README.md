@@ -28,7 +28,7 @@ https://hub.docker.com/r/nningego/planespotter
     npm test
     
 ### Set up 
-    [Using v8.11.1 (npm v5.3.0)]
+    [Using node v10.10.0 (npm v6.4.1)]
     npm install
 
 ### Start app:
@@ -44,6 +44,6 @@ https://hub.docker.com/r/nningego/planespotter
     
 ### TODOs:
 
-[] Upgrade npm dependencies
+[x] Upgrade npm dependencies
 
-[] Use http://github.com/infrablocks/concourse.js
+[x] Use http://github.com/infrablocks/concourse.js
