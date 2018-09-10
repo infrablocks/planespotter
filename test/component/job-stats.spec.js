@@ -1,6 +1,7 @@
 const { expect, use } = require('chai');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const http = require('http');
 
 const app = require('../../src/app');
 const config = require('../../src/config');
@@ -13,31 +14,62 @@ use(chaiHttp);
 describe('App', () => {
   describe('/job-stats.json', () => {
     let concourse;
+    let server;
+    let token;
+
     beforeEach(() => {
-      concourse = new ConcourseInterceptor(config.baseApiUri);
-      concourse.getAuthToken(config.authUsername, config.authPassword)
+      token = builders.buildToken();
+      concourse = new ConcourseInterceptor(
+        config.url,
+        config.teamName,
+        config.authentication,
+      );
+      concourse.onGetInfo()
         .reply(200, {
-          type: 'Bearer',
-          value: 'some-token',
+          version: '4.1.0',
         });
+      concourse.onCreateToken()
+        .reply(200, token);
+      concourse.onFetchAllTeams(token)
+        .reply(200, [builders.buildTeam({ name: config.teamName })]);
+
+      server = http.createServer(concourse.getHandler());
+      server.listen(1337);
+    });
+
+    afterEach((done) => {
+      server.close(done);
     });
 
     it('responds with status 200', (done) => {
-      concourse.getPipelines('Bearer some-token')
+      const pipeline1Name = 'pipeline1';
+      const pipeline2Name = 'pipeline2';
+      const job1Name = 'job1';
+      const job2Name = 'job2';
+
+      concourse.onFetchAllPipelines(token)
         .reply(200, builders.buildPipelinesFor({
-          pipelinesNames: ['pipeline1', 'pipeline2'],
+          pipelinesNames: [pipeline1Name, pipeline2Name],
+        }));
+      concourse.onFetchPipeline(pipeline1Name, token)
+        .reply(200, builders.buildPipelineFor({
+          name: pipeline1Name,
+        }));
+      concourse.onFetchPipeline(pipeline2Name, token)
+        .reply(200, builders.buildPipelineFor({
+          name: pipeline2Name,
         }));
 
-      concourse.getJobs('pipeline1', 'Bearer some-token')
+      concourse.onFetchAllJobs(pipeline1Name, token)
         .reply(200, builders.buildJobsFor({
-          pipelineName: 'pipeline1',
-          jobNames: ['job1', 'job2'],
+          pipelineName: pipeline1Name,
+          jobNames: [job1Name, job2Name],
         }));
 
-      concourse.getJobs('pipeline2', 'Bearer some-token')
+      concourse.onFetchAllJobs(pipeline2Name, token)
         .reply(200, builders.buildJobsFor({
-          pipelineName: 'pipeline2',
-          jobNames: ['job1', 'job2'],
+          pipelineName: pipeline2Name,
+          jobNames: [job1Name, job2Name],
         }));
 
       chai.request(app)
@@ -52,16 +84,23 @@ describe('App', () => {
     });
 
     it('responds with no projects if job has no finished builds', (done) => {
-      concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1'] }));
+      const pipelineName = 'pipeline1';
+      const jobName = 'job1';
+
+      concourse.onFetchAllPipelines(token)
+        .reply(200, builders.buildPipelinesFor({
+          pipelinesNames: [pipelineName],
+        }));
+      concourse.onFetchPipeline(pipelineName, token)
+        .reply(200, builders.buildPipelineFor({ name: pipelineName }));
 
       const emptyJob = {
         next_build: null,
         finished_build: null,
       };
-      concourse.getJobs('pipeline1', 'Bearer some-token')
+      concourse.onFetchAllJobs(pipelineName, token)
         .reply(200, [
-          builders.buildJobFor({ pipelineName: 'pipeline1', jobName: 'job1' }),
+          builders.buildJobFor({ pipelineName, jobName }),
           emptyJob,
         ]);
 
@@ -77,29 +116,41 @@ describe('App', () => {
     });
 
     it('responds with jobs with resources', (done) => {
-      concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1', 'pipeline2'] }));
+      const pipeline1Name = 'pipeline1';
+      const pipeline2Name = 'pipeline2';
+      const job1Name = 'job1';
 
-      const p1Jobs = builders.buildJobsFor({
-        pipelineName: 'pipeline1',
-        jobNames: ['job1'],
-      });
-      concourse.getJobs('pipeline1', 'Bearer some-token')
-        .reply(200, p1Jobs);
+      concourse.onFetchAllPipelines(token)
+        .reply(200, builders.buildPipelinesFor({
+          pipelinesNames: [pipeline1Name, pipeline2Name],
+        }));
+      concourse.onFetchPipeline(pipeline1Name, token)
+        .reply(200, builders.buildPipelineFor({ name: pipeline1Name }));
+      concourse.onFetchPipeline(pipeline2Name, token)
+        .reply(200, builders.buildPipelineFor({ name: pipeline2Name }));
 
-      const p2Jobs = builders.buildJobsFor({
-        pipelineName: 'pipeline2',
-        jobNames: ['job1'],
+      const p1Job = builders.buildJobFor({
+        pipelineName: pipeline1Name,
+        jobName: job1Name,
       });
-      concourse.getJobs('pipeline2', 'Bearer some-token')
-        .reply(200, p2Jobs);
+      concourse.onFetchAllJobs(pipeline1Name, token)
+        .reply(200, [p1Job]);
+
+      const p2Job = builders.buildJobFor({
+        pipelineName: pipeline2Name,
+        jobName: job1Name,
+      });
+      concourse.onFetchAllJobs(pipeline2Name, token)
+        .reply(200, [p2Job]);
 
       const resource1 = builders.buildResourceFor({
         resourceName: 'resource1',
         resourceType: 'semver',
         resourceVersion: '0.1.0',
       });
-      concourse.getJobResources('pipeline1-job1-id', 'Bearer some-token')
+      concourse.onFetchBuild(p1Job.finished_build.id, token)
+        .reply(200, builders.buildBuildFor({ id: p1Job.finished_build.id }));
+      concourse.onFetchBuildResources(p1Job.finished_build.id, token)
         .reply(200, builders.buildResourcesFor({ resources: [resource1] }));
 
       const resource2 = builders.buildResourceFor({
@@ -107,7 +158,9 @@ describe('App', () => {
         resourceType: 'git',
         resourceVersion: 'cd1e2bd19e03a81132a23b2025920577f84e37',
       });
-      concourse.getJobResources('pipeline2-job1-id', 'Bearer some-token')
+      concourse.onFetchBuild(p2Job.finished_build.id, token)
+        .reply(200, builders.buildBuildFor({ id: p2Job.finished_build.id }));
+      concourse.onFetchBuildResources(p2Job.finished_build.id, token)
         .reply(200, builders.buildResourcesFor({ resources: [resource2] }));
 
       chai.request(app)
@@ -123,25 +176,42 @@ describe('App', () => {
     });
 
     it('responds with jobs with no resources', (done) => {
-      concourse.getPipelines('Bearer some-token')
-        .reply(200, builders.buildPipelinesFor({ pipelinesNames: ['pipeline1', 'pipeline2'] }));
+      const pipeline1Name = 'pipeline1';
+      const pipeline2Name = 'pipeline2';
 
-      concourse.getJobs('pipeline1', 'Bearer some-token')
-        .reply(200, builders.buildJobsFor({
-          pipelineName: 'pipeline1',
-          jobNames: ['job1'],
+      concourse.onFetchAllPipelines(token)
+        .reply(200, builders.buildPipelinesFor({
+          pipelinesNames: [pipeline1Name, pipeline2Name],
         }));
+      concourse.onFetchPipeline(pipeline1Name, token)
+        .reply(200, builders.buildPipelineFor({ name: pipeline1Name }));
+      concourse.onFetchPipeline(pipeline2Name, token)
+        .reply(200, builders.buildPipelineFor({ name: pipeline2Name }));
 
-      concourse.getJobs('pipeline2', 'Bearer some-token')
-        .reply(200, builders.buildJobsFor({
-          pipelineName: 'pipeline2',
-          jobNames: ['job1'],
-        }));
+      const job1Name = 'job1';
 
-      concourse.getJobResources('pipeline1-job1-id', 'Bearer some-token')
+      const job1 = builders.buildJobFor({
+        pipelineName: pipeline1Name,
+        jobName: job1Name,
+      });
+      concourse.onFetchAllJobs(pipeline1Name, token)
+        .reply(200, [job1]);
+
+      const job2 = builders.buildJobFor({
+        pipelineName: pipeline2Name,
+        jobName: job1Name,
+      });
+      concourse.onFetchAllJobs(pipeline2Name, token)
+        .reply(200, [job2]);
+
+      concourse.onFetchBuild(job1.finished_build.id, token)
+        .reply(200, builders.buildBuildFor({ id: job1.finished_build.id }));
+      concourse.onFetchBuildResources(job1.finished_build.id, token)
         .reply(200, builders.buildResourcesFor({ resources: [] }));
 
-      concourse.getJobResources('pipeline2-job1-id', 'Bearer some-token')
+      concourse.onFetchBuild(job2.finished_build.id, token)
+        .reply(200, builders.buildBuildFor({ id: job2.finished_build.id }));
+      concourse.onFetchBuildResources(job2.finished_build.id, token)
         .reply(200, builders.buildResourcesFor({ resources: [] }));
 
       chai.request(app)

@@ -3,11 +3,11 @@
 ## Docker image
 https://hub.docker.com/r/nningego/planespotter
 
-- v3.0.0 supports concourse 3.14.1 and above
+- v4.0.0 add support for concourse 4.0.0 and above
 
 ## Needs:
 
-    API_URL [concourse API, example: https://ci.server/api/v1]
+    URL [concourse URL, example: https://ci.server]
 
     AUTH_USERNAME/AUTH_PASSWORD [basic auth credentials]
     
@@ -40,7 +40,7 @@ https://hub.docker.com/r/nningego/planespotter
     
 ### Start with docker:
     docker build . -t planespotter
-    docker run --rm -e TEAM -e API_URL -e AUTH_USERNAME -e AUTH_PASSWORD -p 3000:3000 -t planespotter
+    docker run --rm -e TEAM -e URL -e AUTH_USERNAME -e AUTH_PASSWORD -p 3000:3000 -t planespotter
     
 ### TODOs:
 

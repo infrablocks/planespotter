@@ -8,6 +8,6 @@
     "lastBuildStatus": "Success",
     "lastBuildLabel": "pipeline1",
     "lastBuildTime": "2017-08-11T16:58:49.000Z",
-    "webUrl": "https://ci/teams/main/pipelines/pipeline1/jobs/job1/builds/2"
+    "webUrl": "http://localhost:1337/api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2"
   }
 ]

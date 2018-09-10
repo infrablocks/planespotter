@@ -9,27 +9,27 @@ const translateStatus = {
   aborted: 'Exception',
 };
 
-const _mapCCXML = (baseUri, job) => ({
-  name: `${job.finished_build.pipeline_name}#${job.finished_build.job_name}`,
-  activity: job.next_build ? 'Building' : 'Sleeping',
-  lastBuildStatus: translateStatus[job.finished_build.status],
-  lastBuildLabel: job.finished_build.pipeline_name,
-  lastBuildTime: job.finished_build.end_time
-  && new Date(job.finished_build.end_time * 1000).toISOString(),
-  webUrl: baseUri.origin + job.finished_build.api_url,
+const _mapCCXML = (url, job) => ({
+  name: `${job.finishedBuild.pipelineName}#${job.finishedBuild.jobName}`,
+  activity: job.nextBuild ? 'Building' : 'Sleeping',
+  lastBuildStatus: translateStatus[job.finishedBuild.status],
+  lastBuildLabel: job.finishedBuild.pipelineName,
+  lastBuildTime: job.finishedBuild.endTime
+  && new Date(job.finishedBuild.endTime * 1000).toISOString(),
+  webUrl: `${url}api/v1${job.finishedBuild.apiUrl}`,
 });
 
-const _mapJson = (baseUri, job) => ({
-  id: job.finished_build.id,
-  pipeline: job.finished_build.pipeline_name,
-  job: job.finished_build.job_name,
-  name: `${job.finished_build.pipeline_name}#${job.finished_build.job_name}`,
-  activity: job.next_build ? 'Building' : 'Sleeping',
-  lastBuildStatus: translateStatus[job.finished_build.status],
-  lastBuildLabel: job.finished_build.pipeline_name,
-  lastBuildTime: job.finished_build.end_time
-  && new Date(job.finished_build.end_time * 1000).toISOString(),
-  webUrl: baseUri.origin + job.finished_build.api_url,
+const _mapJson = (url, job) => ({
+  id: job.finishedBuild.id,
+  pipeline: job.finishedBuild.pipelineName,
+  job: job.finishedBuild.jobName,
+  name: `${job.finishedBuild.pipelineName}#${job.finishedBuild.jobName}`,
+  activity: job.nextBuild ? 'Building' : 'Sleeping',
+  lastBuildStatus: translateStatus[job.finishedBuild.status],
+  lastBuildLabel: job.finishedBuild.pipelineName,
+  lastBuildTime: job.finishedBuild.endTime
+  && new Date(job.finishedBuild.endTime * 1000).toISOString(),
+  webUrl: `${url}api/v1${job.finishedBuild.apiUrl}`,
 });
 
 const _mapResources = resources => resources.inputs
@@ -39,12 +39,12 @@ const _mapResources = resources => resources.inputs
     version,
   }));
 
-exports.toProject = (baseUri, job) => job.finished_build && {
+exports.toProject = (url, job) => job.finishedBuild && {
   Project: {
-    _attr: _mapCCXML(baseUri, job),
+    _attr: _mapCCXML(url, job),
   },
 };
 
-exports.toJobStats = (baseUri, job) => job.finished_build && _mapJson(baseUri, job);
+exports.toJobStats = (url, job) => job.finishedBuild && _mapJson(url, job);
 exports.toJobResources = resources => _mapResources(resources);
 

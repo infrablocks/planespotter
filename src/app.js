@@ -1,4 +1,6 @@
 /* eslint-disable consistent-return */
+require('babel-polyfill');
+
 const express = require('express');
 const xml = require('xml');
 const morgan = require('morgan');
@@ -9,6 +11,7 @@ const Concourse = require('./concourse');
 
 const app = express();
 
+
 app.use(morgan('combined'));
 
 app.get(['/', '/health'], async (req, res) => {
@@ -17,17 +20,18 @@ app.get(['/', '/health'], async (req, res) => {
 
 app.get('/cc.xml', async (req, res) => {
   try {
-    const concourse = new Concourse(config.baseApiUri, config.team);
+    const concourse = new Concourse(
+      config.url,
+      config.teamName,
+      config.authentication,
+    );
 
-    const basicAuthToken =
-      await concourse.fetchAccessToken(config.authUsername, config.authPassword);
-
-    const allPipelines = await concourse.fetchAllPipelines(basicAuthToken);
-
-    const allJobs = await concourse.fetchAllJobs(basicAuthToken, allPipelines);
+    const allPipelines = await concourse.fetchAllPipelines();
+    const allJobs = await concourse.fetchAllJobs(allPipelines);
 
     const projects = allJobs &&
-      allJobs.map(job => feed.toProject(config.baseApiUri, job))
+      allJobs
+        .map(job => feed.toProject(config.url, job))
         .filter(Boolean);
 
     res.set('Content-Type', 'text/xml');
@@ -42,25 +46,27 @@ app.get('/cc.xml', async (req, res) => {
 
 app.get('/job-stats.json', async (req, res) => {
   try {
-    const concourse = new Concourse(config.baseApiUri, config.team);
+    const concourse = new Concourse(
+      config.url,
+      config.teamName,
+      config.authentication,
+    );
 
-    const basicAuthToken =
-      await concourse.fetchAccessToken(config.authUsername, config.authPassword);
-
-    const allPipelines = await concourse.fetchAllPipelines(basicAuthToken);
-
-    const allJobs = await concourse.fetchAllJobs(basicAuthToken, allPipelines);
+    const allPipelines = await concourse.fetchAllPipelines();
+    const allJobs = await concourse.fetchAllJobs(allPipelines);
 
     let projects = allJobs &&
-      allJobs.map(job => feed.toJobStats(config.baseApiUri, job))
+      allJobs.map(job => feed.toJobStats(config.url, job))
         .filter(Boolean);
 
     const { resources } = req.query;
     if (resources === 'inputs') {
-      projects = await Promise.all(projects.map(job =>
-        concourse.fetchJobResources(basicAuthToken, job)
-          .then(fetchedResources =>
-            ({ ...job, resources: feed.toJobResources(fetchedResources) }))));
+      projects = await Promise.all(projects.map(project =>
+        concourse.fetchBuildResources(project.id)
+          .then(fetchedResources => ({
+            ...project,
+            resources: feed.toJobResources(fetchedResources),
+          }))));
     }
 
     res.set('Content-Type', 'application/json');
