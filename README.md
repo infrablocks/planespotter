@@ -44,6 +44,6 @@ https://hub.docker.com/r/nningego/planespotter
     
 ### TODOs:
 
-[x] Upgrade npm dependencies
+[ ] Upgrade npm dependencies
 
 [x] Use http://github.com/infrablocks/concourse.js
