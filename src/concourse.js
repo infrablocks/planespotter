@@ -3,12 +3,13 @@ const { Client } = require('@infrablocks/concourse');
 class Concourse {
   constructor(url, teamName, authentication) {
     this.teamName = teamName;
-    this.client = Client.instanceFor(
-      url.origin,
-      authentication.username,
-      authentication.password,
+    this.client = Client.instanceFor({
+      url: url.origin,
+      username: authentication.username,
+      password: authentication.password,
       teamName,
-    );
+      timeout: 10000
+    });
   }
 
   async fetchAllPipelines() {
