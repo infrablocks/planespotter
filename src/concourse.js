@@ -8,7 +8,7 @@ class Concourse {
       username: authentication.username,
       password: authentication.password,
       teamName,
-      timeout: 10000
+      timeout: 30000,
     });
   }
 
