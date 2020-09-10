@@ -34,4 +34,3 @@ class Concourse {
 }
 
 module.exports = Concourse;
-

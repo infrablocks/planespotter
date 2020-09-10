@@ -5,9 +5,9 @@ const http = require('http');
 
 const app = require('../../src/app');
 const config = require('../../src/config');
-const builders = require('./../builders');
+const builders = require('../builders');
 const helpers = require('../helpers');
-const ConcourseInterceptor = require('./../interceptors/ConcourseInterceptor');
+const ConcourseInterceptor = require('../interceptors/ConcourseInterceptor');
 
 use(chaiHttp);
 

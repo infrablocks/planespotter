@@ -7,11 +7,10 @@ const config = require('../../src/config');
 
 describe('toProjects', () => {
   it('should map successful job to project', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
 
     const project = feed.toProject(config.url, job);
 
@@ -41,11 +40,10 @@ describe('toProjects', () => {
   });
 
   it('returns job as Building if next build info present', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.nextBuild = { id: 123 };
 
     const project = feed.toProject(config.url, job);
@@ -65,11 +63,10 @@ describe('toProjects', () => {
   });
 
   it('returns failed job if status failed', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.finishedBuild.status = 'failed';
 
     const project = feed.toProject(config.url, job);
@@ -89,11 +86,10 @@ describe('toProjects', () => {
   });
 
   it('returns failed job is errored', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.finishedBuild.status = 'errored';
 
     const project = feed.toProject(config.url, job);
@@ -115,11 +111,10 @@ describe('toProjects', () => {
 
 describe('toJobStats', () => {
   it('should map successful job to project', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
 
     const project = feed.toJobStats(config.url, job);
 
@@ -148,11 +143,10 @@ describe('toJobStats', () => {
   });
 
   it('returns job as Building if next build info present', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.nextBuild = { id: 123 };
 
     const project = feed.toJobStats(config.url, job);
@@ -171,11 +165,10 @@ describe('toJobStats', () => {
   });
 
   it('returns failed job if status failed', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.finishedBuild.status = 'failed';
 
     const project = feed.toJobStats(config.url, job);
@@ -194,11 +187,10 @@ describe('toJobStats', () => {
   });
 
   it('returns failed job is errored', () => {
-    const job =
-      camelcaseKeysDeep(builders.buildJobFor({
-        pipelineName: 'pipeline1',
-        jobName: 'job1',
-      }));
+    const job = camelcaseKeysDeep(builders.buildJobFor({
+      pipelineName: 'pipeline1',
+      jobName: 'job1',
+    }));
     job.finishedBuild.status = 'errored';
 
     const project = feed.toJobStats(config.url, job);

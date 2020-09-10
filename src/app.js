@@ -11,7 +11,6 @@ const Concourse = require('./concourse');
 
 const app = express();
 
-
 app.use(morgan('combined'));
 
 app.get(['/', '/health'], async (req, res) => {
@@ -29,9 +28,9 @@ app.get('/cc.xml', async (req, res) => {
     const allPipelines = await concourse.fetchAllPipelines();
     const allJobs = await concourse.fetchAllJobs(allPipelines);
 
-    const projects = allJobs &&
-      allJobs
-        .map(job => feed.toProject(config.url, job))
+    const projects = allJobs
+      && allJobs
+        .map((job) => feed.toProject(config.url, job))
         .filter(Boolean);
 
     res.set('Content-Type', 'text/xml');
@@ -55,18 +54,19 @@ app.get('/job-stats.json', async (req, res) => {
     const allPipelines = await concourse.fetchAllPipelines();
     const allJobs = await concourse.fetchAllJobs(allPipelines);
 
-    let projects = allJobs &&
-      allJobs.map(job => feed.toJobStats(config.url, job))
+    let projects = allJobs
+      && allJobs.map((job) => feed.toJobStats(config.url, job))
         .filter(Boolean);
 
     const { resources } = req.query;
     if (resources === 'inputs') {
-      projects = await Promise.all(projects.map(project =>
-        concourse.fetchBuildResources(project.id)
-          .then(fetchedResources => ({
+      projects = await Promise.all(projects.map(
+        (project) => concourse.fetchBuildResources(project.id)
+          .then((fetchedResources) => ({
             ...project,
             resources: feed.toJobResources(fetchedResources),
-          }))));
+          })),
+      ));
     }
 
     res.set('Content-Type', 'application/json');

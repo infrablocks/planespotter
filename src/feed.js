@@ -32,7 +32,7 @@ const _mapJson = (url, job) => ({
   webUrl: `${url}api/v1${job.finishedBuild.apiUrl}`,
 });
 
-const _mapResources = resources => resources.inputs
+const _mapResources = (resources) => resources.inputs
   && resources.inputs.map(({ resource: name, type, version }) => ({
     name,
     type,
@@ -46,5 +46,4 @@ exports.toProject = (url, job) => job.finishedBuild && {
 };
 
 exports.toJobStats = (url, job) => job.finishedBuild && _mapJson(url, job);
-exports.toJobResources = resources => _mapResources(resources);
-
+exports.toJobResources = (resources) => _mapResources(resources);
