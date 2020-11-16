@@ -1,8 +1,9 @@
 # Planes Spotter
 
 ## Docker image
-https://hub.docker.com/r/nningego/planespotter
+https://hub.docker.com/r/infrablocks/planespotter
 
+- v5.0.0 add support for concourse 6.0.0 and above
 - v4.0.0 add support for concourse 4.0.0 and above
 
 ## Needs:

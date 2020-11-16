@@ -2,13 +2,13 @@ const env = require('env-var');
 const url = require('url');
 
 const fetchConfig = () => {
-  const URL = env('URL').required().asString();
-  const TEAM = env('TEAM').asString();
-  const AUTH_USERNAME = env('AUTH_USERNAME').required().asString();
-  const AUTH_PASSWORD = env('AUTH_PASSWORD').required().asString();
+  const URL = env.get('URL').required().asString();
+  const TEAM = env.get('TEAM').default('main').asString();
+  const AUTH_USERNAME = env.get('AUTH_USERNAME').required().asString();
+  const AUTH_PASSWORD = env.get('AUTH_PASSWORD').required().asString();
   return {
     url: new url.URL(URL),
-    teamName: TEAM || 'main',
+    teamName: TEAM,
     authentication: {
       username: AUTH_USERNAME,
       password: AUTH_PASSWORD,
