@@ -1,4 +1,4 @@
-FROM node:12.19.1
+FROM node:16.13.2
 
 WORKDIR               /opt/planespotter
 
