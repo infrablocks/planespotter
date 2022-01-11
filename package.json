@@ -35,7 +35,7 @@
     "hock": "^1.4",
     "jsonwebtoken": "^8.5",
     "mocha": "^8.4",
-    "nock": "^13.0",
+    "nock": "^13.2",
     "node-rsa": "^1.1",
     "nodemon": "^2.0"
   }
