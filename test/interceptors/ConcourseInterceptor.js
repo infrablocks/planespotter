@@ -1,5 +1,5 @@
 const hock = require('hock');
-const formurlencoded = require('form-urlencoded').default;
+const formUrlencoded = require('form-urlencoded');
 
 class ConcourseInterceptor {
   constructor(url, teamName, authentication) {
@@ -20,7 +20,7 @@ class ConcourseInterceptor {
     return this.mock
       .post(
         '/sky/token',
-        formurlencoded({
+        formUrlencoded({
           grant_type: 'password',
           username: this.authentication.username,
           password: this.authentication.password,

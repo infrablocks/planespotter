@@ -119,7 +119,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
-      id: 'pipeline1-job1-id',
+      id: '11',
       name: 'pipeline1#job1',
       pipeline: 'pipeline1',
       job: 'job1',
@@ -152,7 +152,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
-      id: 'pipeline1-job1-id',
+      id: '11',
       name: 'pipeline1#job1',
       pipeline: 'pipeline1',
       job: 'job1',
@@ -174,7 +174,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
-      id: 'pipeline1-job1-id',
+      id: '11',
       name: 'pipeline1#job1',
       pipeline: 'pipeline1',
       job: 'job1',
@@ -196,7 +196,7 @@ describe('toJobStats', () => {
     const project = feed.toJobStats(config.url, job);
 
     expect(project).to.eql({
-      id: 'pipeline1-job1-id',
+      id: '11',
       name: 'pipeline1#job1',
       pipeline: 'pipeline1',
       job: 'job1',

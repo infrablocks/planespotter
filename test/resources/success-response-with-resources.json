@@ -1,6 +1,6 @@
 [
   {
-    "id": "pipeline1-job1-id",
+    "id": "11",
     "name": "pipeline1#job1",
     "pipeline": "pipeline1",
     "job": "job1",
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "id": "pipeline2-job1-id",
+    "id": "21",
     "name": "pipeline2#job1",
     "pipeline": "pipeline2",
     "job": "job1",

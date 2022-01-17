@@ -82,7 +82,7 @@ exports.buildBuildFor = ({
   pipelineName = chance.word(),
   apiUrl = `/teams/main/pipelines/${pipelineName}/jobs/${jobName}/builds/2`,
   endTime = 1502470729,
-  id = `${pipelineName}-${jobName}-id`,
+  id = `${pipelineName.slice(-1)}${jobName.slice(-1)}`,
 } = {}) => ({
   id,
   team_name: teamName,

@@ -1,6 +1,6 @@
 [
   {
-    "id": "pipeline1-job1-id",
+    "id": "11",
     "name": "pipeline1#job1",
     "pipeline": "pipeline1",
     "job": "job1",
@@ -11,7 +11,7 @@
     "webUrl": "http://localhost:1337/api/v1/teams/main/pipelines/pipeline1/jobs/job1/builds/2"
   },
   {
-    "id": "pipeline1-job2-id",
+    "id": "12",
     "name": "pipeline1#job2",
     "pipeline": "pipeline1",
     "job": "job2",
@@ -22,7 +22,7 @@
     "webUrl": "http://localhost:1337/api/v1/teams/main/pipelines/pipeline1/jobs/job2/builds/2"
   },
   {
-    "id": "pipeline2-job1-id",
+    "id": "21",
     "name": "pipeline2#job1",
     "pipeline": "pipeline2",
     "job": "job1",
@@ -33,7 +33,7 @@
     "webUrl": "http://localhost:1337/api/v1/teams/main/pipelines/pipeline2/jobs/job1/builds/2"
   },
   {
-    "id": "pipeline2-job2-id",
+    "id": "22",
     "name": "pipeline2#job2",
     "pipeline": "pipeline2",
     "job": "job2",
