@@ -1,0 +1,108 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@4.4.2
+
+jobs:
+  test:
+    working_directory: ~/planespotter
+    docker:
+      - image: node:14
+    steps:
+      - checkout
+      - run: ./scripts/ci/steps/test.sh
+      - slack/notify:
+          event: fail
+          channel: dev
+          template: SLACK_FAILURE_NOTIFICATION
+      - slack/notify:
+          event: pass
+          channel: builds
+          template: SLACK_SUCCESS_NOTIFICATION
+
+  prerelease:
+    working_directory: ~/planespotter
+    docker:
+      - image: node:14
+    steps:
+      - checkout
+      - run: ./scripts/ci/common/install-git-crypt.sh
+      - run: ./scripts/ci/common/install-gpg-key.sh
+      - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/common/install-ruby.sh
+      - run: ./scripts/ci/steps/prerelease.sh
+      - slack/notify:
+          event: fail
+          channel: dev
+          template: SLACK_FAILURE_NOTIFICATION
+      - slack/notify:
+          event: pass
+          channel: builds
+          template: SLACK_SUCCESS_NOTIFICATION
+
+  release:
+    working_directory: ~/planespotter
+    docker:
+      - image: node:14
+    steps:
+      - checkout
+      - run: ./scripts/ci/common/install-git-crypt.sh
+      - run: ./scripts/ci/common/install-gpg-key.sh
+      - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/common/install-ruby.sh
+      - run: ./scripts/ci/steps/release.sh
+      - slack/notify:
+          event: fail
+          channel: dev
+          template: SLACK_FAILURE_NOTIFICATION
+      - slack/notify:
+          event: pass
+          channel: builds
+          template: SLACK_SUCCESS_NOTIFICATION
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - test:
+          context:
+            - slack
+          filters:
+            branches:
+              only:
+                - main
+                - /^dependabot.*/
+      - prerelease:
+          context:
+            - slack
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
+      - slack/on-hold:
+          context:
+            - slack
+          requires:
+            - prerelease
+          filters:
+            branches:
+              only: main
+          channel: dev
+          template: SLACK_ON_HOLD_NOTIFICATION
+      - hold:
+          type: approval
+          requires:
+            - prerelease
+            - slack/on-hold
+          filters:
+            branches:
+              only: main
+      - release:
+          context:
+            - slack
+          requires:
+            - hold
+          filters:
+            branches:
+              only: main
