@@ -6,6 +6,6 @@ set -o pipefail
 
 apt-get update
 
-apt-get install ruby-full
+apt-get install -y ruby-full
 
 echo 'gem: --no-document' > /etc/gemrc
