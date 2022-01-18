@@ -4,12 +4,8 @@
 set -e
 set -o pipefail
 
-apk \
-    --update-cache \
-    add \
-        ca-certificates \
-        ruby \
-        ruby-bundler \
-        ruby-json
+apt-get update
+
+apt-get install ruby-full
 
 echo 'gem: --no-document' > /etc/gemrc
