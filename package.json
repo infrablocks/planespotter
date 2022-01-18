@@ -1,13 +1,16 @@
 {
   "name": "planespotter",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "description": "Concourse CC.xml Feed",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node src/app.js",
     "test": "npm run lint-fix && NODE_ENV=test mocha --exit --recursive \"test/**/*.spec.js\"",
     "lint": "eslint -c .eslintrc src test --ext .js",
-    "lint-fix": "eslint --fix -c .eslintrc src test --ext .js"
+    "lint-fix": "eslint --fix -c .eslintrc src test --ext .js",
+    "version:bump:pre": "npm version prerelease --preid=pre",
+    "version:bump:minor": "npm version minor",
+    "version:bump:next": "npm version preminor --preid=pre"
   },
   "author": "",
   "license": "ISC",
