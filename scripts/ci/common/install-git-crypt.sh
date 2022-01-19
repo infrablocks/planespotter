@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 [ -n "$DEBUG" ] && set -x
 set -e
 set -o pipefail
 
-apt-get update
-apt-get install -y --no-install-recommends git ssh git-crypt
+apk \
+    --update-cache \
+    add \
+        git-crypt \
+        gnupg \
+        openssl
