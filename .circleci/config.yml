@@ -23,14 +23,16 @@ jobs:
   prerelease:
     working_directory: ~/planespotter
     docker:
-      - image: ruby:2.7.5
+      - image: docker:20.10.12-git
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
-      - run: ./scripts/ci/steps/prerelease.sh
+      - run: ./scripts/ci/steps/release.sh
       - slack/notify:
           event: fail
           channel: dev
@@ -43,9 +45,11 @@ jobs:
   release:
     working_directory: ~/planespotter
     docker:
-      - image: ruby:2.7.5
+      - image: docker:20.10.12-git
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
