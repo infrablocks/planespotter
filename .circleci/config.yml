@@ -7,7 +7,7 @@ jobs:
   test:
     working_directory: ~/planespotter
     docker:
-      - image: node:14
+      - image: node:16
     steps:
       - checkout
       - run: ./scripts/ci/steps/test.sh
@@ -23,7 +23,7 @@ jobs:
   prerelease:
     working_directory: ~/planespotter
     docker:
-      - image: node:14
+      - image: node:16
     steps:
       - checkout
       - run: ./scripts/ci/common/install-git-crypt.sh
@@ -43,7 +43,7 @@ jobs:
   release:
     working_directory: ~/planespotter
     docker:
-      - image: node:14
+      - image: node:16
     steps:
       - checkout
       - run: ./scripts/ci/common/install-git-crypt.sh
