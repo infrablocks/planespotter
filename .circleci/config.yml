@@ -26,6 +26,7 @@ jobs:
       - image: docker:20.10.11-git
     steps:
       - checkout
+      - setup_remote_docker
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
@@ -48,6 +49,7 @@ jobs:
       - image: docker:20.10.11-git
     steps:
       - checkout
+      - setup_remote_docker
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
