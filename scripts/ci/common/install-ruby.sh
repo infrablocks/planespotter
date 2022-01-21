@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 [ -n "$DEBUG" ] && set -x
 set -e
@@ -8,7 +8,7 @@ apk \
     --update-cache \
     add \
         ca-certificates \
-        ruby \
+        ruby=2.7.5 \
         ruby-bundler \
         ruby-json
 
