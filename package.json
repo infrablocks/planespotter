@@ -8,9 +8,9 @@
     "test": "npm run lint-fix && NODE_ENV=test mocha --exit --recursive \"test/**/*.spec.js\"",
     "lint": "eslint -c .eslintrc src test --ext .js",
     "lint-fix": "eslint --fix -c .eslintrc src test --ext .js",
-    "version:bump:pre": "npm version prerelease --preid=pre",
-    "version:bump:minor": "npm version minor",
-    "version:bump:next": "npm version preminor --preid=pre"
+    "version:bump:pre": "npm version prerelease --preid=pre --message \"%s [skip ci]\"",
+    "version:bump:minor": "npm version minor --message \"%s [skip ci]\"",
+    "version:bump:next": "npm version preminor --preid=pre --message \"%s [skip ci]\""
   },
   "author": "",
   "license": "ISC",
