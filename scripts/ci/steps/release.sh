@@ -7,7 +7,7 @@ set -o pipefail
 git crypt unlock
 git pull
 
-npm version:bump:minor
+npm run version:bump:minor
 
 ./go docker:publish
 

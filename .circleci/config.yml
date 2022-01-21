@@ -32,7 +32,7 @@ jobs:
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
-      - run: ./scripts/ci/steps/release.sh
+      - run: ./scripts/ci/steps/prerelease.sh
       - slack/notify:
           event: fail
           channel: dev
