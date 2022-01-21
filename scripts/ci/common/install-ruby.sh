@@ -8,7 +8,7 @@ apk \
     --update-cache \
     add \
         ca-certificates \
-        ruby=3.0.3-r0 \
+        ruby=2.7.5-r0 \
         ruby-bundler \
         ruby-json
 
