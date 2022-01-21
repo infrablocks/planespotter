@@ -23,7 +23,7 @@ jobs:
   prerelease:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.12-git
+      - image: docker:20.10.11-git
     steps:
       - checkout
       - run: ./scripts/ci/common/install-bash.sh
@@ -45,7 +45,7 @@ jobs:
   release:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.12-git
+      - image: docker:20.10.11-git
     steps:
       - checkout
       - run: ./scripts/ci/common/install-bash.sh
