@@ -64,9 +64,11 @@ jobs:
   merge_pull_request:
     working_directory: ~/source
     docker:
-      - image: ruby:2.7.5
+      - image: docker:20.10.11-git
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
