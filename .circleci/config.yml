@@ -5,9 +5,11 @@ jobs:
   test:
     working_directory: ~/planespotter
     docker:
-      - image: node:16
+      - image: docker:20.10.11-git
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-node-and-npm.sh
       - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
       - run: ./scripts/ci/steps/test.sh
       - slack/notify:
