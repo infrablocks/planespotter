@@ -7,4 +7,5 @@ set -o pipefail
 apk \
     --update-cache \
     add \
-        bash
+        curl \
+        jq

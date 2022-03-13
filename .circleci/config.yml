@@ -8,6 +8,7 @@ jobs:
       - image: node:16
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
       - run: ./scripts/ci/steps/test.sh
       - slack/notify:
           event: fail
@@ -30,6 +31,7 @@ jobs:
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
+      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
       - run: ./scripts/ci/steps/prerelease.sh
       - slack/notify:
           event: fail
@@ -52,6 +54,7 @@ jobs:
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
+      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
       - run: ./scripts/ci/steps/release.sh
       - slack/notify:
           event: fail
@@ -72,7 +75,16 @@ jobs:
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
       - run: ./scripts/ci/steps/merge-pull-request.sh
+      - slack/notify:
+          event: fail
+          channel: dev
+          template: SLACK_FAILURE_NOTIFICATION
+      - slack/notify:
+          event: pass
+          channel: builds
+          template: SLACK_SUCCESS_NOTIFICATION
 workflows:
   version: 2
   pipeline:
