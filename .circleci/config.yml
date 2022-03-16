@@ -100,6 +100,8 @@ workflows:
                 - main
                 - /^dependabot.*/
       - merge_pull_request:
+          context:
+            - slack
           requires:
             - test
           filters:
