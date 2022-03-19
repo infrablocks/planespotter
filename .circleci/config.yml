@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
-      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
+      - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/test.sh
       - slack/notify:
           event: fail
@@ -27,13 +27,19 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
+      - save_cache:
+          key: ruby-3.1.1
+          paths:
+            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
-      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
+      - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/prerelease.sh
       - slack/notify:
           event: fail
@@ -50,13 +56,19 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
+      - save_cache:
+          key: ruby-3.1.1
+          paths:
+            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
-      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
+      - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/release.sh
       - slack/notify:
           event: fail
@@ -72,12 +84,18 @@ jobs:
       - image: docker:20.10.11-git
     steps:
       - checkout
+      - restore_cache:
+          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
+      - save_cache:
+          key: ruby-3.1.1
+          paths:
+            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
-      - run: ./scripts/ci/common/install-slack-orb-dependencies.sh
+      - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/merge-pull-request.sh
       - slack/notify:
           event: fail
@@ -87,6 +105,7 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
+
 workflows:
   version: 2
   pipeline:

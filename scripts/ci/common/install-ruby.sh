@@ -4,8 +4,8 @@
 set -e
 set -o pipefail
 
-RBENV_ROOT=/usr/local/rbenv
 RUBY_VERSION=3.1.1
+RBENV_ROOT=/usr/local/rbenv
 CONFIGURE_OPTS=--disable-install-doc
 PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH
 
@@ -17,7 +17,6 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
   apk \
       --update-cache \
       add --update \
-      bash \
       git \
       wget \
       curl \
@@ -43,11 +42,6 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
 
   rbenv install $RUBY_VERSION
   rbenv global $RUBY_VERSION
-
-  rbenv which gem
-
-  ls -la /usr/local/rbenv/shims
-  ls -la /usr/local/rbenv/bin
 
   gem install bundler
 fi
