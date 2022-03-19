@@ -23,7 +23,7 @@ jobs:
   prerelease:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.11-git
+      - image: docker:20.10.13-git
     steps:
       - checkout
       - setup_remote_docker
