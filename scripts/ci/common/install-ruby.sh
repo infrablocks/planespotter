@@ -9,44 +9,45 @@ RUBY_VERSION=3.1.1
 CONFIGURE_OPTS=--disable-install-doc
 PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH
 
+export RBENV_ROOT
 export CONFIGURE_OPTS
 export PATH
 
-apk \
-    --update-cache \
-    add --update \
-    bash \
-    git \
-    wget \
-    curl \
-    vim \
-    build-base \
-    readline-dev \
-    openssl-dev \
-    zlib-dev \
-    linux-headers \
-    imagemagick-dev \
-    libffi-dev \
-    libffi-dev
+if [[ ! -d "${RBENV_ROOT}" ]]; then
+  apk \
+      --update-cache \
+      add --update \
+      bash \
+      git \
+      wget \
+      curl \
+      vim \
+      build-base \
+      readline-dev \
+      openssl-dev \
+      zlib-dev \
+      linux-headers \
+      imagemagick-dev \
+      libffi-dev \
+      libffi-dev
 
-rm -rf /var/cache/apk/*
+  rm -rf /var/cache/apk/*
 
-git clone --depth 1 https://github.com/rbenv/rbenv.git ${RBENV_ROOT}
-git clone --depth 1 https://github.com/rbenv/ruby-build.git ${RBENV_ROOT}/plugins/ruby-build
+  git clone --depth 1 https://github.com/rbenv/rbenv.git ${RBENV_ROOT}
+  git clone --depth 1 https://github.com/rbenv/ruby-build.git ${RBENV_ROOT}/plugins/ruby-build
 
-${RBENV_ROOT}/plugins/ruby-build/install.sh
+  ${RBENV_ROOT}/plugins/ruby-build/install.sh
 
-# shellcheck disable=SC2016
-echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
+  # shellcheck disable=SC2016
+  echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
 
-rbenv install $RUBY_VERSION
-rbenv global $RUBY_VERSION
+  rbenv install $RUBY_VERSION
+  rbenv global $RUBY_VERSION
 
-rbenv which gem
+  rbenv which gem
 
-ls -la /usr/local/rbenv/shims
-ls -la /usr/local/rbenv/bin
+  ls -la /usr/local/rbenv/shims
+  ls -la /usr/local/rbenv/bin
 
-eval "$(rbenv init -)"
-
-gem install bundler
+  gem install bundler
+fi
