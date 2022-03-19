@@ -7,8 +7,10 @@ set -o pipefail
 RBENV_ROOT=/usr/local/rbenv
 RUBY_VERSION=3.1.1
 CONFIGURE_OPTS=--disable-install-doc
+PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH
 
 export CONFIGURE_OPTS
+export PATH
 
 apk \
     --update-cache \
