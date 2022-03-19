@@ -29,9 +29,9 @@ apk \
 
 rm -rf /var/cache/apk/*
 
-git clone --depth 1 git://github.com/sstephenson/rbenv.git ${RBENV_ROOT}
-git clone --depth 1 https://github.com/sstephenson/ruby-build.git ${RBENV_ROOT}/plugins/ruby-build
-git clone --depth 1 git://github.com/jf/rbenv-gemset.git ${RBENV_ROOT}/plugins/rbenv-gemset
+git clone --depth 1 git@github.com/sstephenson/rbenv.git ${RBENV_ROOT}
+git clone --depth 1 git@github.com/sstephenson/ruby-build.git ${RBENV_ROOT}/plugins/ruby-build
+git clone --depth 1 git@github.com/jf/rbenv-gemset.git ${RBENV_ROOT}/plugins/rbenv-gemset
 
 ${RBENV_ROOT}/plugins/ruby-build/install.sh
 
