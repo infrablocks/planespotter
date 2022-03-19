@@ -42,4 +42,11 @@ echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
 rbenv install $RUBY_VERSION
 rbenv global $RUBY_VERSION
 
+rbenv which gem
+
+ls -la /usr/local/rbenv/shims
+ls -la /usr/local/rbenv/bin
+
+eval "$(rbenv init -)"
+
 gem install bundler
