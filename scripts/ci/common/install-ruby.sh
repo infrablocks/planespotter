@@ -132,7 +132,7 @@ GEM_HOME=/usr/local/bundle
   # don't create ".bundle" in all our apps
   echo "export BUNDLE_SILENCE_ROOT_WARNING=1"
   echo 'export BUNDLE_APP_CONFIG=/usr/local/bundle'
-  echo 'export PATH $GEM_HOME/bin:$PATH'
+  echo 'export PATH=$GEM_HOME/bin:$PATH'
 } >> "$BASH_ENV"
 
 # adjust permissions of a few directories for running "gem install" as an arbitrary user
