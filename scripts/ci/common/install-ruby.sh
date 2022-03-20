@@ -45,3 +45,5 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
 
   gem install bundler
 fi
+
+eval "$(rbenv init -)"
