@@ -27,14 +27,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
-      - save_cache:
-          key: ruby-3.1.1
-          paths:
-            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
@@ -56,14 +50,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
-      - save_cache:
-          key: ruby-3.1.1
-          paths:
-            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
@@ -84,14 +72,8 @@ jobs:
       - image: docker:20.10.11-git
     steps:
       - checkout
-      - restore_cache:
-          key: ruby-3.1.1
       - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-ruby.sh
-      - save_cache:
-          key: ruby-3.1.1
-          paths:
-            - /usr/local/rbenv
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
