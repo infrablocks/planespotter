@@ -125,8 +125,10 @@ ruby --version
 gem --version
 bundle --version
 
+GEM_HOME=/usr/local/bundle
+
 {
-  echo "export GEM_HOME=/usr/local/bundle"
+  echo "export GEM_HOME=$GEM_HOME"
   # don't create ".bundle" in all our apps
   echo "export BUNDLE_SILENCE_ROOT_WARNING=1"
   echo 'export BUNDLE_APP_CONFIG=/usr/local/bundle'
