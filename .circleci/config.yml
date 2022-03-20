@@ -5,10 +5,9 @@ jobs:
   test:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.11-git
+      - image: ruby:3.1.1
     steps:
       - checkout
-      - run: ./scripts/ci/common/install-bash.sh
       - run: ./scripts/ci/common/install-node-and-npm.sh
       - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/test.sh
@@ -23,12 +22,11 @@ jobs:
   prerelease:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.13-git
+      - image: ruby:3.1.1
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-docker.sh
       - setup_remote_docker
-      - run: ./scripts/ci/common/install-bash.sh
-      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
@@ -46,12 +44,11 @@ jobs:
   release:
     working_directory: ~/planespotter
     docker:
-      - image: docker:20.10.11-git
+      - image: ruby:3.1.1
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-docker.sh
       - setup_remote_docker
-      - run: ./scripts/ci/common/install-bash.sh
-      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
@@ -69,14 +66,13 @@ jobs:
   merge_pull_request:
     working_directory: ~/source
     docker:
-      - image: docker:20.10.11-git
+      - image: ruby:3.1.1
     steps:
       - checkout
-      - run: ./scripts/ci/common/install-bash.sh
-      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/common/install-node-and-npm.sh
       - run: ./scripts/ci/common/install-orb-deps.sh
       - run: ./scripts/ci/steps/merge-pull-request.sh
       - slack/notify:

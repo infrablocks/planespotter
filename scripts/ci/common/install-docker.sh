@@ -5,4 +5,4 @@ set -e
 set -o pipefail
 
 apt-get update
-apt-get install -y --no-install-recommends git ssh git-crypt
+apt-get install -y --no-install-recommends docker

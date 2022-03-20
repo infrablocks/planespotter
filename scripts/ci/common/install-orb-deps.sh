@@ -4,8 +4,5 @@
 set -e
 set -o pipefail
 
-apk \
-    --update-cache \
-    add \
-        curl \
-        jq
+apt-get update
+apt-get install -y --no-install-recommends curl jq
