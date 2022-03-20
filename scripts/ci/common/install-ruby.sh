@@ -49,3 +49,6 @@ fi
   # shellcheck disable=SC2016
   echo 'eval "$(rbenv init -)"'
 } >> "$BASH_ENV"
+
+echo "$BASH_ENV"
+cat "$BASH_ENV"
