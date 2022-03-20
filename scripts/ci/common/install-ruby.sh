@@ -37,13 +37,11 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
 
   ${RBENV_ROOT}/plugins/ruby-build/install.sh
 
-  # shellcheck disable=SC2016
-  echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
-
   rbenv install $RUBY_VERSION
   rbenv global $RUBY_VERSION
 
   gem install bundler
 fi
 
-eval "$(rbenv init -)"
+# shellcheck disable=SC2016
+echo 'eval "$(rbenv init -)"' >> $BASH_ENV
