@@ -44,10 +44,10 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
 fi
 
 {
-  echo "PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+  echo "PATH=$PATH"
+  echo "RBENV_ROOT=$RBENV_ROOT"
   echo "export PATH"
-  # shellcheck disable=SC2016
-  echo 'eval "$(rbenv init -)"'
+  echo "export RBENV_ROOT"
 } >> "$BASH_ENV"
 
 echo "$BASH_ENV"
