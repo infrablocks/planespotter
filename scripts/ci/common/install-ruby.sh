@@ -43,5 +43,9 @@ if [[ ! -d "${RBENV_ROOT}" ]]; then
   gem install bundler
 fi
 
-# shellcheck disable=SC2016
-echo 'eval "$(rbenv init -)"' >> $BASH_ENV
+{
+  echo "PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+  echo "export PATH"
+  # shellcheck disable=SC2016
+  echo 'eval "$(rbenv init -)"'
+} >> "$BASH_ENV"
