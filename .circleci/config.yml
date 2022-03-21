@@ -3,7 +3,6 @@ orbs:
   slack: circleci/slack@4.8.3
 jobs:
   test:
-    working_directory: ~/planespotter
     docker:
       - image: ruby:3.1.1
     steps:
@@ -20,7 +19,6 @@ jobs:
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
   prerelease:
-    working_directory: ~/planespotter
     docker:
       - image: ruby:3.1.1
     steps:
@@ -42,7 +40,6 @@ jobs:
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
   release:
-    working_directory: ~/planespotter
     docker:
       - image: ruby:3.1.1
     steps:
@@ -64,7 +61,6 @@ jobs:
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
   merge_pull_request:
-    working_directory: ~/source
     docker:
       - image: ruby:3.1.1
     steps:
