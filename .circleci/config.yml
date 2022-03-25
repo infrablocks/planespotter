@@ -52,7 +52,6 @@ commands:
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
-      - run: ./scripts/ci/common/configure-npm.sh
 
 jobs:
   build:
