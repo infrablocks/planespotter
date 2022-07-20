@@ -32,7 +32,7 @@
     "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-mocha": "^10.0.5",
+    "eslint-plugin-mocha": "^10.1.0",
     "form-urlencoded": "^6.0.6",
     "freeport": "^1.0",
     "hock": "^1.4",
