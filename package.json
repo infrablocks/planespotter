@@ -29,7 +29,7 @@
     "chai-http": "^4.3",
     "chai-xml": "^0.4",
     "chance": "^1.1",
-    "eslint": "^8.27.0",
+    "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-mocha": "^10.1.0",
