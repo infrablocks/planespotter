@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@infrablocks/concourse": "^0.26.0",
+    "@infrablocks/concourse": "^0.27.0",
     "babel-polyfill": "^6.26",
     "bluebird": "^3.7",
     "env-var": "^7.3.0",
