@@ -36,7 +36,7 @@
     "form-urlencoded": "^6.1.0",
     "freeport": "^1.0",
     "hock": "^1.4",
-    "jsonwebtoken": "^8.5",
+    "jsonwebtoken": "^9.0",
     "mocha": "^10.2.0",
     "nock": "^13.2",
     "node-rsa": "^1.1",
