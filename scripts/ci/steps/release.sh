@@ -11,7 +11,7 @@ npm run version:bump:minor
 
 ./go docker:publish
 
-npm version:bump:next
+npm run version:bump:next
 
 git status
 git push --all
