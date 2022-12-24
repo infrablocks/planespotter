@@ -32,7 +32,7 @@ const _randomBearerToken = (overrides = {}, options = {}) => {
     expiresIn: '1 day',
     ...options,
   };
-  const rsaPrivateKey = new NodeRSA({ b: 512 })
+  const rsaPrivateKey = new NodeRSA({ b: 2048 })
     .exportKey('pkcs8-private-pem');
 
   return jwt.sign(resolvedData, rsaPrivateKey, resolvedOptions);

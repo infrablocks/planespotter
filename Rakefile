@@ -64,7 +64,7 @@ namespace :build do
     task check: [:rubocop]
 
     desc 'Attempt to automatically fix issues with the build code'
-    task fix: [:'rubocop:auto_correct']
+    task fix: [:'rubocop:autocorrect_all']
   end
 end
 
