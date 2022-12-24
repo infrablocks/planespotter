@@ -1,6 +1,6 @@
 {
   "name": "planespotter",
-  "version": "5.1.1-pre.13",
+  "version": "5.2.0-pre.0",
   "description": "Concourse CC.xml Feed",
   "main": "index.js",
   "scripts": {
