@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node src/app.js",
-    "test": "npm run lint-fix && NODE_ENV=test mocha --exit --recursive --timeout 10000 \"test/**/*.spec.js\"",
+    "test": "npm run lint-fix && NODE_ENV=test mocha --exit --recursive --timeout 20000 \"test/**/*.spec.js\"",
     "lint": "eslint -c .eslintrc src test --ext .js",
     "lint-fix": "eslint --fix -c .eslintrc src test --ext .js",
     "version:bump:pre": "npm version prerelease --preid=pre --message \"%s [skip ci]\"",
