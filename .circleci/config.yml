@@ -2,6 +2,8 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.8.3
+  ruby: circleci/ruby@0.1.2
+  node: circleci/node@5.1.0
 
 defaults: &defaults
   docker:
@@ -63,16 +65,20 @@ commands:
                 template: SLACK_SUCCESS_NOTIFICATION
   configure_for_build:
     steps:
+      - node/install:
+          node-version: '18.18'
+      - run: node --version
       - run: ./scripts/ci/common/install-orb-deps.sh
-      - run: ./scripts/ci/common/install-node-and-npm.sh
   configure_docker:
     steps:
       - run: ./scripts/ci/common/install-docker.sh
       - setup_remote_docker
   configure_for_release:
     steps:
+      - node/install:
+          node-version: '18.18'
+      - run: node --version
       - run: ./scripts/ci/common/install-orb-deps.sh
-      - run: ./scripts/ci/common/install-node-and-npm.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/common/configure-git.sh
