@@ -9,5 +9,4 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
 cd "$PROJECT_DIR"
 
-./go build:code:check
-./go library:lint
+asdf install
