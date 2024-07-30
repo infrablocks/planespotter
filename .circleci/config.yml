@@ -96,7 +96,7 @@ commands:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:SEwHXsZP19dMrgvshPRVZeuH3B2xckp8P4x2EsBAKww"
+            - "SHA256:GhKDc/GYoi90by8HhvPaJ+eSVLV0xL+cxleOoJd0ZYY"
       - run: ./scripts/ci/common/configure-npm.sh
 
   configure_tools:
