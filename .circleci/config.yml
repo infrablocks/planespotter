@@ -7,7 +7,7 @@ base_container: &base_container
   image: buildpack-deps:buster
 
 build_container: &build_container
-  resource_class: arm.medium
+  resource_class: medium
   docker:
     - <<: *base_container
 
