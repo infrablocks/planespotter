@@ -19,7 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "bluebird": "^3.7.2",
     "env-var": "^7.4.1",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "morgan": "^1.10.0",
     "xml": "^1.0.1"
   },
