@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "camelcase-keys-deep": "^0.1.0",
-    "chai": "^4.3.10",
+    "chai": "^5.2.1",
     "chai-http": "^4.4.0",
     "chai-xml": "^0.4.1",
     "chance": "^1.1.12",
